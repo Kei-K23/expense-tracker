@@ -2,6 +2,7 @@ import Button from "@/components/ui/button";
 import HeroSectionCard from "@/components/welcome-screen/hero-section-card";
 import Image from "@/constants/Image";
 import { defaultStyles } from "@/constants/Style";
+import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { SafeAreaView, View } from "react-native";
@@ -23,8 +24,20 @@ export default function WelcomeScreen() {
           gap: 10,
         }}
       >
-        <Button title="test" variant="primary" />
-        <Button title="test" variant="secondary" />
+        <Button
+          title="Sign Up"
+          variant="primary"
+          callbackFn={() => {
+            router.push("/sign-up");
+          }}
+        />
+        <Button
+          title="Login"
+          variant="secondary"
+          callbackFn={() => {
+            router.push("/login");
+          }}
+        />
       </View>
       <StatusBar backgroundColor="#161622" style="light" />
     </SafeAreaView>

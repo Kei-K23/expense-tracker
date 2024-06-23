@@ -16,24 +16,23 @@ export default function Button({
   isLoading = false,
   variant = "primary",
 }: ButtonProps) {
+  const getButtonStyle = () => {
+    if (isLoading) return styles.gray;
+    return variant === "primary" ? styles.primary : styles.secondary;
+  };
+
+  const getTextStyle = () => {
+    if (isLoading) return styles.textGray;
+    return variant === "primary" ? styles.textPrimary : styles.textSecondary;
+  };
+
   return (
     <TouchableOpacity
       disabled={isLoading}
       onPress={callbackFn}
-      style={[styles.btn, styles[isLoading ? "gray" : variant]]}
+      style={[styles.btn, getButtonStyle()]}
     >
-      <Text
-        style={[
-          styles.text,
-          isLoading
-            ? styles.textGray
-            : variant === "primary"
-            ? styles.textPrimary
-            : styles.textSecondary,
-        ]}
-      >
-        {title}
-      </Text>
+      <Text style={[styles.text, getTextStyle()]}>{title}</Text>
     </TouchableOpacity>
   );
 }
@@ -46,6 +45,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 10,
     width: "100%",
+  },
+  text: {
+    fontSize: fontSize.text,
+    fontWeight: "900",
+    textTransform: "capitalize",
   },
   primary: {
     backgroundColor: colors.primary[100],
@@ -64,10 +68,5 @@ const styles = StyleSheet.create({
   },
   textGray: {
     color: colors.gray[300],
-  },
-  text: {
-    fontSize: fontSize.text,
-    fontWeight: "900",
-    textTransform: "capitalize",
   },
 });

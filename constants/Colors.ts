@@ -16,6 +16,9 @@ export const colors = {
     tabIconDefault: '#ccc',
     tabIconSelected: tintColorDark,
   },
+  background: {
+    backgroundColor: "rgb(242, 242, 242)"
+  },
   primary: {
     100: "#7F3DFF",
     200: "#B18AFF",
