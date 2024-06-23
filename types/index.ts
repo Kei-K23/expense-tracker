@@ -1,5 +1,4 @@
-export type UserSignUp = {
-    username: string;
+export type UserRegister = {
     phone: string;
     password: string;
     confirmPassword: string;

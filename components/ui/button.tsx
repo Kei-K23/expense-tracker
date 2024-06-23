@@ -32,7 +32,9 @@ export default function Button({
       onPress={callbackFn}
       style={[styles.btn, getButtonStyle()]}
     >
-      <Text style={[styles.text, getTextStyle()]}>{title}</Text>
+      <Text style={[styles.text, getTextStyle()]}>
+        {isLoading ? "Loading..." : title}
+      </Text>
     </TouchableOpacity>
   );
 }

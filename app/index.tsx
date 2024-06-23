@@ -38,6 +38,13 @@ export default function WelcomeScreen() {
             router.push("/login");
           }}
         />
+        <Button
+          title="Login"
+          variant="secondary"
+          callbackFn={() => {
+            router.push("/account-verify/2424234242-242424242");
+          }}
+        />
       </View>
       <StatusBar backgroundColor="#161622" style="light" />
     </SafeAreaView>

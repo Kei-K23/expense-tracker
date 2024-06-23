@@ -1,54 +1,85 @@
 import Button from "@/components/ui/button";
 import FormField from "@/components/ui/form-field";
 import { colors } from "@/constants/Colors";
-import { defaultStyles } from "@/constants/Style";
-import { Link } from "expo-router";
+import { defaultStyles, fontSize } from "@/constants/Style";
+import { registerUserAccountWithPhoneNumber } from "@/db/user";
+import useShowErrorAlert from "@/hooks/use-show-error-alert";
+import { Link, router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import React from "react";
-import { SafeAreaView, Text, View } from "react-native";
+import React, { useState } from "react";
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 
 export default function SignUpScreen() {
+  const showAlert = useShowErrorAlert();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [phone, setPhone] = useState<string>("");
+
+  //   const handleOnChange = (field: keyof UserRegister, value: string) => {
+  //     setUserRegister((prevState) => ({
+  //       ...prevState,
+  //       [field]: value,
+  //     }));
+  //   };
+
+  const handleOnPress = async () => {
+    // Check if fields have values to register
+    if (phone === "") {
+      showAlert({
+        message: "Please enter your phone number",
+      });
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      // Create a new account
+      const userID = await registerUserAccountWithPhoneNumber(phone);
+
+      if (userID) {
+        console.log(userID);
+
+        // Navigate to account verification screen
+        router.push(`/account-verify/${phone}-${userID}`);
+
+        // Clear the fields
+        setPhone("");
+      } else {
+        showAlert({
+          message: "Something went wrong when registering new account",
+        });
+        return;
+      }
+    } catch (e: any) {
+      showAlert({
+        message: e,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <SafeAreaView style={defaultStyles.layout}>
+      <Text style={styles.title}>Register new account</Text>
       <View
         style={{
           marginBottom: 20,
         }}
       >
         <FormField
-          handleOnChange={() => {}}
-          label="Name"
-          labelShown={false}
-          placeholder="Name"
-          value=""
-        />
-        <FormField
-          handleOnChange={() => {}}
+          handleOnChange={setPhone}
           label="Phone"
           labelShown={false}
-          placeholder="Phone"
-          value=""
+          placeholder="Phone number"
+          value={phone}
           keyboardType="phone-pad"
         />
-        <FormField
-          handleOnChange={() => {}}
-          label="Password"
-          labelShown={false}
-          placeholder="Password"
-          value=""
-          keyboardType="visible-password"
-        />
-        <FormField
-          handleOnChange={() => {}}
-          label="Confirm Password"
-          labelShown={false}
-          placeholder="Confirm Password"
-          value=""
-          keyboardType="visible-password"
-        />
       </View>
-      <Button title="Sign Up" />
-
+      <Button
+        title="Sign Up"
+        callbackFn={handleOnPress}
+        isLoading={isLoading}
+      />
       <View
         style={{
           flexDirection: "row",
@@ -77,3 +108,12 @@ export default function SignUpScreen() {
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  title: {
+    fontSize: fontSize.text,
+    fontWeight: "bold",
+    marginBottom: 20,
+    color: colors.gray[300],
+  },
+});
