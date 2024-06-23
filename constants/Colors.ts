@@ -16,6 +16,11 @@ export const colors = {
     tabIconDefault: '#ccc',
     tabIconSelected: tintColorDark,
   },
+  primary: {
+    100: "#7F3DFF",
+    200: "#B18AFF",
+    300: "#e3d4ff"
+  },
   black: {
     DEFAULT: "#000",
     100: "#1E1E2D",

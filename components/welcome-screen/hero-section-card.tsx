@@ -25,7 +25,7 @@ export default function HeroSectionCard({
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 50,
+    marginTop: 100,
   },
   title: {
     fontSize: fontSize.header,
