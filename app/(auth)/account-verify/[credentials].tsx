@@ -1,19 +1,22 @@
 import Button from "@/components/ui/button";
 import FormField from "@/components/ui/form-field";
 import { colors } from "@/constants/Colors";
+import { keysForStorage } from "@/constants/Keys";
 import { defaultStyles, fontSize } from "@/constants/Style";
 import {
   accountVerification,
   registerUserAccountWithPhoneNumber,
 } from "@/db/user";
 import useShowErrorAlert from "@/hooks/use-show-error-alert";
+import { storeData } from "@/lib/async-storeage";
 import { router, useLocalSearchParams, useNavigation } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity } from "react-native";
 
-export default function AccountVerify() {
+export default function AccountVerifyScreen() {
   const navigation = useNavigation();
   const showAlert = useShowErrorAlert();
+  // TODO: Check credentials can be device into phone number and user id in the component mounted
   const { credentials } = useLocalSearchParams<{
     credentials: string;
   }>();
@@ -22,15 +25,17 @@ export default function AccountVerify() {
   const [code, setCode] = useState<string>("");
   const [countdown, setCountdown] = useState<number>(60);
 
+  // Verify user account with SMS code and userId
   const handleOnPress = async () => {
     // Check if fields have values to register
     if (credentials === "") {
       showAlert({
-        message: "Please the phone number",
+        message: "credentials are missing to verify the account",
       });
       return;
     }
 
+    // Get user account from url
     const userId = credentials?.split("-")[1];
 
     if (!userId) {
@@ -42,17 +47,22 @@ export default function AccountVerify() {
 
     try {
       setIsLoading(true);
-      // Create a new account
+      // Verify the account
       const session = await accountVerification(code, userId);
 
       if (session.$id) {
-        // Navigate to account verification screen
+        // Store valid session to async storage
+        await storeData(keysForStorage.session, session);
+
         showAlert({
-          message: "Successfully created user",
+          message: "Successfully verify user account",
         });
 
         // Clear the fields
         setCode("");
+
+        // Navigate to account setup screen
+        router.push("/setup-user-account");
       } else {
         showAlert({
           message: "Something went wrong when verifying the code",
@@ -67,12 +77,6 @@ export default function AccountVerify() {
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    navigation.setOptions({
-      headerTitle: "Verification",
-    });
-  }, []);
 
   const handleResendCode = async () => {
     const phone = credentials?.split("-")[0];
@@ -91,8 +95,6 @@ export default function AccountVerify() {
         const userID = await registerUserAccountWithPhoneNumber(phone);
 
         if (userID) {
-          console.log(userID);
-
           // Navigate to account verification screen
           router.push(`/account-verify/${phone}-${userID}`);
 
@@ -113,6 +115,15 @@ export default function AccountVerify() {
       }
     }
   };
+
+  // Setup name for navigation
+  useEffect(() => {
+    navigation.setOptions({
+      headerTitle: "Verification",
+    });
+  }, []);
+
+  // Start the countdown timer for SMS code re-sending
   useEffect(() => {
     let timer: NodeJS.Timeout;
     if (countdown > 0) {
@@ -144,15 +155,7 @@ export default function AccountVerify() {
         check the code and verify the account.
       </Text>
       <TouchableOpacity onPress={handleResendCode} disabled={countdown > 0}>
-        <Text
-          style={[
-            countdown > 0 ? styles.disabledText : styles.text,
-            {
-              textDecorationLine: "underline",
-              marginBottom: 25,
-            },
-          ]}
-        >
+        <Text style={[countdown > 0 ? styles.disabledText : styles.linkText]}>
           I didn't receive the code? Send again{" "}
           {countdown > 0 && `(${countdown}s)`}
         </Text>
@@ -161,6 +164,7 @@ export default function AccountVerify() {
     </SafeAreaView>
   );
 }
+
 const styles = StyleSheet.create({
   title: {
     fontSize: fontSize.headerSmall,
@@ -170,7 +174,13 @@ const styles = StyleSheet.create({
   text: {
     color: colors.primary[100],
   },
+  linkText: {
+    textDecorationLine: "underline",
+    marginBottom: 25,
+    color: colors.primary[100],
+  },
   disabledText: {
     color: colors.gray[300],
+    marginBottom: 25,
   },
 });

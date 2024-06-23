@@ -5,6 +5,7 @@ export const appwriteConfig = {
     platform: process.env.EXPO_PUBLIC_PLATFORM!,
     projectId: process.env.EXPO_PUBLIC_PROJECT_ID!,
     databaseId: process.env.EXPO_PUBLIC_DATABASE_ID!,
+    storageId: process.env.EXPO_PUBLIC_STORAGE_ID!,
     userCollectionId: process.env.EXPO_PUBLIC_USER_COLLECTION_ID!,
 }
 

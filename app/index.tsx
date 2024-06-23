@@ -1,13 +1,44 @@
 import Button from "@/components/ui/button";
 import HeroSectionCard from "@/components/welcome-screen/hero-section-card";
 import Image from "@/constants/Image";
+import { keysForStorage } from "@/constants/Keys";
 import { defaultStyles } from "@/constants/Style";
+import { getStoreData } from "@/lib/async-storeage";
 import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useEffect } from "react";
 import { SafeAreaView, View } from "react-native";
+import { Models } from "react-native-appwrite";
 
 export default function WelcomeScreen() {
+  // Check session exist and active
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const session = await getStoreData<Models.Session>(
+          keysForStorage.session
+        );
+        if (session) {
+          if (session?.expire) {
+            const expirationDate = new Date(session.expire);
+            const now = new Date();
+
+            if (expirationDate > now) {
+              console.log("Session is active.");
+              router.replace("/setup-user-account");
+            }
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        router.replace("/");
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <SafeAreaView style={[defaultStyles.layout]}>
       <HeroSectionCard

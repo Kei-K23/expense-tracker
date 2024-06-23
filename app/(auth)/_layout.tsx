@@ -24,6 +24,12 @@ export default function AuthLayout() {
           title: "Login",
         }}
       />
+      <Stack.Screen
+        name="setup-user-account"
+        options={{
+          title: "User Account Setup",
+        }}
+      />
     </Stack>
   );
 }

@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  TextInputProps,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -27,6 +28,7 @@ type FormFieldProps = {
     | "name-phone-pad"
     | "web-search"
     | "visible-password";
+  props?: TextInputProps;
 };
 
 export default function FormField({
@@ -36,6 +38,7 @@ export default function FormField({
   value,
   handleOnChange,
   keyboardType = "default",
+  props,
 }: FormFieldProps) {
   const [isFocused, setIsFocused] = useState(false);
   const [isTextVisible, setIsTextVisible] = useState(false);
@@ -46,6 +49,7 @@ export default function FormField({
       <View>
         {/* TODO When user click outside of focused input then selected input need to be false */}
         <TextInput
+          {...props}
           value={value}
           placeholderTextColor={"gray"}
           placeholder={placeholder}
@@ -101,7 +105,7 @@ const styles = StyleSheet.create({
     borderColor: colors.primary[100],
   },
   label: {
-    color: colors.gray[100],
+    color: colors.gray[300],
     fontWeight: "600",
   },
 });

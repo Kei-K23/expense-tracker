@@ -14,13 +14,6 @@ export default function SignUpScreen() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [phone, setPhone] = useState<string>("");
 
-  //   const handleOnChange = (field: keyof UserRegister, value: string) => {
-  //     setUserRegister((prevState) => ({
-  //       ...prevState,
-  //       [field]: value,
-  //     }));
-  //   };
-
   const handleOnPress = async () => {
     // Check if fields have values to register
     if (phone === "") {
