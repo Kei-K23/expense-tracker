@@ -29,8 +29,6 @@ export default function SignUpScreen() {
       const userID = await registerUserAccountWithPhoneNumber(phone);
 
       if (userID) {
-        console.log(userID);
-
         // Navigate to account verification screen
         router.push(`/account-verify/${phone}-${userID}`);
 

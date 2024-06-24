@@ -56,10 +56,10 @@ export const createUserAccount = async ({ username, password, phone, email, acco
         // If avatar is not null then upload to cloud storage and return url string
         if (avatar) {
             userAvatar = await uploadFile(avatar);
+        } else {
+            // Create default avatar with username if user not upload avatar
+            userAvatar = avatars.getInitials(username);
         }
-
-        // Create default avatar with username if user not upload avatar
-        userAvatar = avatars.getInitials(username);
 
         // Create user account
         const newUser = await databases.createDocument(
@@ -80,5 +80,14 @@ export const createUserAccount = async ({ username, password, phone, email, acco
     } catch (e) {
         console.log(e);
         throw new Error("Error while creating user account");
+    }
+}
+
+export const getSignedInUser = async () => {
+    try {
+        return await account.get()
+    } catch (e) {
+        console.log(e);
+        throw new Error("Error while getting sign in user");
     }
 }

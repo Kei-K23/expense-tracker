@@ -2,30 +2,40 @@ import Button from "@/components/ui/button";
 import FileUploadPicker from "@/components/ui/file-upload-picker";
 import FormField from "@/components/ui/form-field";
 import { colors } from "@/constants/Colors";
+import { keysForStorage } from "@/constants/Keys";
 import { defaultStyles, fontSize } from "@/constants/Style";
+import { createUserAccount, getSignedInUser } from "@/db/user";
 import useShowErrorAlert from "@/hooks/use-show-error-alert";
+import { getStoreData } from "@/lib/async-storeage";
 import { UserType } from "@/types";
 import { getDocumentAsync } from "expo-document-picker";
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { Models } from "react-native-appwrite";
+
+type UserAccountType = UserType & {
+  confirmPassword: string;
+};
 
 export default function SetupUserAccountScreen() {
   const showAlert = useShowErrorAlert();
-
-  const [userAccount, setUserAccount] = useState<UserType>({
+  const [userId, setUserId] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [userAccount, setUserAccount] = useState<UserAccountType>({
     username: "",
     email: "",
     phone: "",
-    password: "",
     avatar: null,
     accountId: "",
+    password: "",
+    confirmPassword: "",
   });
 
-  const handleOnChange = (field: keyof UserType, value: string) => {
+  const handleOnChange = (field: keyof UserAccountType, value: string) => {
     setUserAccount((prevState) => ({
       ...prevState,
-      [field]: value,
+      [field]: value.trim(),
     }));
   };
 
@@ -51,6 +61,89 @@ export default function SetupUserAccountScreen() {
     }
   };
 
+  const handleOnPress = async () => {
+    // Check user id exists, if exists set to account id
+    if (userId) {
+      setUserAccount({
+        ...userAccount,
+        accountId: userId,
+      });
+    } else {
+      showAlert({
+        message: "User id is missing",
+      });
+      return;
+    }
+    // Check phone number exists, if not show alert and exit the function
+    if (!userAccount.phone) {
+      showAlert({
+        message: "Phone number is missing",
+      });
+      return;
+    }
+
+    // Check if fields have values to register
+    if (
+      userAccount.username === "" ||
+      userAccount.email === "" ||
+      userAccount.password === "" ||
+      userAccount.confirmPassword === ""
+    ) {
+      showAlert({
+        message: "Please fill in all the fields",
+      });
+      return;
+    }
+
+    // Password checking with confirm password
+    if (userAccount.password !== userAccount.confirmPassword) {
+      showAlert({
+        message: "Passwords do not match",
+      });
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      // User account creation
+      const newUser = await createUserAccount(userAccount);
+
+      if (newUser.$id) {
+        showAlert({
+          message: "Account setup successfully",
+        });
+        return;
+      }
+    } catch (e: any) {
+      showAlert({
+        message: "Error",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    // Get user account id from session that store in local storage
+    (async () => {
+      const [session, singedUser] = await Promise.all([
+        getStoreData<Models.Session>(keysForStorage.session),
+        getSignedInUser(),
+      ]);
+
+      if (session) {
+        setUserId(session.userId);
+      }
+
+      if (singedUser) {
+        setUserAccount({
+          ...userAccount,
+          phone: singedUser.phone,
+        });
+      }
+    })();
+  }, []);
+
   return (
     <SafeAreaView style={defaultStyles.layout}>
       <Text style={styles.title}>Let's setup your user account!</Text>
@@ -72,6 +165,7 @@ export default function SetupUserAccountScreen() {
           labelShown={false}
           placeholder="Email"
           value={userAccount.email}
+          keyboardType="email-address"
         />
         <FileUploadPicker
           placeholder="Click here to upload avatar"
@@ -87,14 +181,18 @@ export default function SetupUserAccountScreen() {
           value={userAccount.password}
         />
         <FormField
-          handleOnChange={(value) => handleOnChange("password", value)}
+          handleOnChange={(value) => handleOnChange("confirmPassword", value)}
           label="Confirm Password"
           labelShown={false}
           placeholder="Confirm Password"
-          value={userAccount.password}
+          value={userAccount.confirmPassword}
         />
       </View>
-      <Button title="Create account" />
+      <Button
+        title="Create account"
+        callbackFn={handleOnPress}
+        isLoading={isLoading}
+      />
       <StatusBar backgroundColor="#161622" style="light" />
     </SafeAreaView>
   );
