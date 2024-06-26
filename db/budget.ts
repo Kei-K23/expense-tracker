@@ -1,11 +1,11 @@
 import { appwriteConfig, databases } from "@/lib/appWrite";
 import { ID, Query } from "react-native-appwrite";
-import { BudgetType, User } from "@/types";
+import { Budget, BudgetType } from "@/types";
 
 export const getAllBudgetByUser = async (userId: string) => {
     try {
         // Query to get all budgets by user id
-        const data = await databases.listDocuments<User>(appwriteConfig.databaseId, appwriteConfig.budgetCollectionId, [
+        const data = await databases.listDocuments<Budget>(appwriteConfig.databaseId, appwriteConfig.budgetCollectionId, [
             Query.equal("user", userId),
             Query.orderDesc("$createdAt"),
         ]);

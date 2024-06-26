@@ -23,6 +23,8 @@ export type UserType = {
     avatar?: DocumentPickerAsset | null;
 }
 
+export type Budget = Models.Document & BudgetType
+
 export type BudgetType = {
     name: string;
     balance: number;
