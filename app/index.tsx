@@ -3,6 +3,7 @@ import HeroSectionCard from "@/components/welcome-screen/hero-section-card";
 import Image from "@/constants/Image";
 import { keysForStorage } from "@/constants/Keys";
 import { defaultStyles } from "@/constants/Style";
+import { getSignedInUser, getUserById } from "@/db/user";
 import { getStoreData } from "@/lib/async-storeage";
 import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -16,23 +17,36 @@ export default function WelcomeScreen() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const session = await getStoreData<Models.Session>(
-          keysForStorage.session
-        );
+        const singedUser = await getSignedInUser();
+
+        const [session, userAccount] = await Promise.all([
+          getStoreData<Models.Session>(keysForStorage.session),
+          getUserById(singedUser.$id),
+        ]);
+
+        // Check session exist
         if (session) {
+          // Check session have expire date
           if (session?.expire) {
             const expirationDate = new Date(session.expire);
             const now = new Date();
-
+            // Check session is active
             if (expirationDate > now) {
               console.log("Session is active.");
-              router.replace("/setup-user-account");
+              // If user account is already created
+              // Navigate to setup budget screen
+              if (userAccount) {
+                router.push("/setup-budget");
+              } else {
+                // If user account is not created, then navigate to account setup screen
+                router.push("/setup-user-account");
+              }
             }
           }
         }
       } catch (error) {
         console.error("Error fetching data:", error);
-        router.replace("/");
+        router.push("/");
       }
     };
 

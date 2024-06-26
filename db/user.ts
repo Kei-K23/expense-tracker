@@ -1,7 +1,7 @@
 import { account, appwriteConfig, avatars, databases } from "@/lib/appWrite";
-import { ID } from "react-native-appwrite";
+import { ID, Query } from "react-native-appwrite";
 import { uploadFile } from "./file-storage";
-import { UserType } from "@/types";
+import { User, UserType } from "@/types";
 
 export const registerUserAccountWithPhoneNumber = async (phone: string) => {
 
@@ -91,3 +91,19 @@ export const getSignedInUser = async () => {
         throw new Error("Error while getting sign in user");
     }
 }
+
+export const getUserById = async (id: string) => {
+    try {
+        // Query to get user account by id
+        const data = await databases.listDocuments<User>(appwriteConfig.databaseId, appwriteConfig.userCollectionId, [
+            Query.equal("accountId", id)
+        ]);
+
+        // Return first index of user document list
+        return data.documents[0];
+    } catch (e) {
+        console.log(e);
+        throw new Error("Something went wrong when getting user");
+    }
+}
+

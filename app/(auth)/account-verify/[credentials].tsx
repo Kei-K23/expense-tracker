@@ -70,8 +70,10 @@ export default function AccountVerifyScreen() {
         return;
       }
     } catch (e: any) {
+      const errorMessage =
+        e instanceof Error ? e.message : "An unknown error occurred";
       showAlert({
-        message: e,
+        message: errorMessage,
       });
     } finally {
       setIsLoading(false);

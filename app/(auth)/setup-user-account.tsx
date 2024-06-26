@@ -4,11 +4,12 @@ import FormField from "@/components/ui/form-field";
 import { colors } from "@/constants/Colors";
 import { keysForStorage } from "@/constants/Keys";
 import { defaultStyles, fontSize } from "@/constants/Style";
-import { createUserAccount, getSignedInUser } from "@/db/user";
+import { createUserAccount, getSignedInUser, getUserById } from "@/db/user";
 import useShowErrorAlert from "@/hooks/use-show-error-alert";
 import { getStoreData } from "@/lib/async-storeage";
 import { UserType } from "@/types";
 import { getDocumentAsync } from "expo-document-picker";
+import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
@@ -112,11 +113,16 @@ export default function SetupUserAccountScreen() {
         showAlert({
           message: "Account setup successfully",
         });
+
+        // Navigate to setup budget screen
+        router.push("/setup-budget");
         return;
       }
     } catch (e: any) {
+      const errorMessage =
+        e instanceof Error ? e.message : "An unknown error occurred";
       showAlert({
-        message: "Error",
+        message: errorMessage,
       });
     } finally {
       setIsLoading(false);
@@ -144,6 +150,18 @@ export default function SetupUserAccountScreen() {
     })();
   }, []);
 
+  useEffect(() => {
+    (async () => {
+      const singedUser = await getSignedInUser();
+
+      if (singedUser) {
+        const userAccount = await getUserById(singedUser.$id);
+        if (userAccount) {
+          router.push("/setup-budget");
+        }
+      }
+    })();
+  });
   return (
     <SafeAreaView style={defaultStyles.layout}>
       <Text style={styles.title}>Let's setup your user account!</Text>

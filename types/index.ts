@@ -1,4 +1,5 @@
 import { DocumentPickerAsset } from "expo-document-picker";
+import { Models } from "react-native-appwrite";
 
 export type UserRegister = {
     phone: string;
@@ -11,6 +12,8 @@ export type UserSignIn = {
     password: string;
 }
 
+export type User = Models.Document & UserType
+
 export type UserType = {
     username: string;
     password: string;
@@ -18,4 +21,11 @@ export type UserType = {
     accountId: string;
     phone: string;
     avatar?: DocumentPickerAsset | null;
+}
+
+export type BudgetType = {
+    name: string;
+    balance: number;
+    user: User | null;
+    type: string
 }

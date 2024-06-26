@@ -30,6 +30,12 @@ export default function AuthLayout() {
           title: "User Account Setup",
         }}
       />
+      <Stack.Screen
+        name="setup-budget"
+        options={{
+          headerShown: false,
+        }}
+      />
     </Stack>
   );
 }
