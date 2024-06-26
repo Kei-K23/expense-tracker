@@ -5,6 +5,7 @@ import { getStoreData } from "@/lib/async-storeage";
 import { keysForStorage } from "@/constants/Keys";
 import { Models } from "react-native-appwrite";
 import { router } from "expo-router";
+import { account } from "@/lib/appWrite";
 
 export default function useRedirectScreen() {
   // Check session exist and active
@@ -14,10 +15,12 @@ export default function useRedirectScreen() {
         const singedUser = await getSignedInUser();
         const userAccount = await getUserById(singedUser.$id);
 
-        const [session, budgets] = await Promise.all([
+        const [storageSession, budgets] = await Promise.all([
           getStoreData<Models.Session>(keysForStorage.session),
           getAllBudgetByUser(userAccount.$id),
         ]);
+
+        const session = await account.getSession(storageSession?.$id!);
 
         // Check session exist
         if (session) {

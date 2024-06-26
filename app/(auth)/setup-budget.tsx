@@ -19,7 +19,7 @@ export default function SetupBudgetScreen() {
     name: "",
     type: "",
     user: null,
-    balance: 0.0,
+    balance: 0,
   });
 
   const handleOnChange = (field: keyof BudgetType, value: string) => {

@@ -26,9 +26,9 @@ export const createBudget = async ({ name, balance, type, user }: BudgetType) =>
             ID.unique(),
             {
                 name: name.trim(),
-                balance,
+                balance: +balance,
                 type: type.trim(),
-                user,
+                user: user?.$id,
             }
         );
 

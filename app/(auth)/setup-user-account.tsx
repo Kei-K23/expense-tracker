@@ -4,7 +4,7 @@ import FormField from "@/components/ui/form-field";
 import { colors } from "@/constants/Colors";
 import { keysForStorage } from "@/constants/Keys";
 import { defaultStyles, fontSize } from "@/constants/Style";
-import { createUserAccount, getSignedInUser, getUserById } from "@/db/user";
+import { createUserAccount, getSignedInUser } from "@/db/user";
 import useShowErrorAlert from "@/hooks/use-show-error-alert";
 import { getStoreData } from "@/lib/async-storeage";
 import { UserType } from "@/types";
@@ -150,18 +150,6 @@ export default function SetupUserAccountScreen() {
     })();
   }, []);
 
-  useEffect(() => {
-    (async () => {
-      const singedUser = await getSignedInUser();
-
-      if (singedUser) {
-        const userAccount = await getUserById(singedUser.$id);
-        if (userAccount) {
-          router.push("/setup-budget");
-        }
-      }
-    })();
-  });
   return (
     <SafeAreaView style={defaultStyles.layout}>
       <Text style={styles.title}>Let's setup your user account!</Text>
