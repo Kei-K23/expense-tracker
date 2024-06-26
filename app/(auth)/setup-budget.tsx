@@ -34,7 +34,7 @@ export default function SetupBudgetScreen() {
     if (user) {
       setBudget({
         ...budget,
-        user,
+        user: user,
       });
     } else {
       showAlert({

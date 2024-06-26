@@ -1,6 +1,9 @@
+import { colors } from "@/constants/Colors";
+import { fontSize } from "@/constants/Style";
 import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import React from "react";
+import { StyleSheet, Text } from "react-native";
 
 export default function TabsLayout() {
   return (
@@ -8,11 +11,11 @@ export default function TabsLayout() {
       screenOptions={{
         tabBarShowLabel: false,
         headerShown: false,
-        tabBarActiveTintColor: "#FFA001",
+        tabBarActiveTintColor: colors.primary[100],
         tabBarStyle: {
-          backgroundColor: "#161622",
-          borderTopWidth: 1,
-          borderTopColor: "232533",
+          backgroundColor: "#fff",
+          borderTopRightRadius: 20,
+          borderTopLeftRadius: 20,
           height: 64,
         },
       }}
@@ -22,7 +25,19 @@ export default function TabsLayout() {
         options={{
           title: "Home",
           tabBarIcon: ({ color }) => (
-            <Ionicons name={"home"} size={25} color={color} />
+            <>
+              <Ionicons name={"home"} size={25} color={color} />
+              <Text
+                style={[
+                  styles.text,
+                  {
+                    color: color,
+                  },
+                ]}
+              >
+                Home
+              </Text>
+            </>
           ),
         }}
       />
@@ -31,7 +46,19 @@ export default function TabsLayout() {
         options={{
           title: "Transaction",
           tabBarIcon: ({ color }) => (
-            <Ionicons name={"arrow-forward"} size={25} color={color} />
+            <>
+              <Ionicons name={"trail-sign"} size={25} color={color} />
+              <Text
+                style={[
+                  styles.text,
+                  {
+                    color: color,
+                  },
+                ]}
+              >
+                Transaction
+              </Text>
+            </>
           ),
         }}
       />
@@ -40,7 +67,19 @@ export default function TabsLayout() {
         options={{
           title: "Create",
           tabBarIcon: ({ color }) => (
-            <Ionicons name={"pulse"} size={25} color={color} />
+            <>
+              <Ionicons name={"add"} size={25} color={color} />
+              <Text
+                style={[
+                  styles.text,
+                  {
+                    color: color,
+                  },
+                ]}
+              >
+                Create
+              </Text>
+            </>
           ),
         }}
       />
@@ -49,7 +88,19 @@ export default function TabsLayout() {
         options={{
           title: "Budget",
           tabBarIcon: ({ color }) => (
-            <Ionicons name={"pie-chart"} size={25} color={color} />
+            <>
+              <Ionicons name={"pie-chart"} size={25} color={color} />
+              <Text
+                style={[
+                  styles.text,
+                  {
+                    color: color,
+                  },
+                ]}
+              >
+                Budget
+              </Text>
+            </>
           ),
         }}
       />
@@ -58,10 +109,29 @@ export default function TabsLayout() {
         options={{
           title: "Profile",
           tabBarIcon: ({ color }) => (
-            <Ionicons name={"logo-usd"} size={25} color={color} />
+            <>
+              <Ionicons name={"person"} size={25} color={color} />
+              <Text
+                style={[
+                  styles.text,
+                  {
+                    color: color,
+                  },
+                ]}
+              >
+                Profile
+              </Text>
+            </>
           ),
         }}
       />
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  text: {
+    color: colors.gray[400],
+    fontSize: fontSize.textTiny,
+  },
+});

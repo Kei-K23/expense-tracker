@@ -17,6 +17,7 @@ export const getAllBudgetByUser = async (userId: string) => {
     }
 }
 
+//! Must TODO : Change balance type to work with float data types
 export const createBudget = async ({ name, balance, type, user }: BudgetType) => {
     try {
         // Create new budget for user
