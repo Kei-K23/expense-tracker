@@ -1,7 +1,7 @@
 import { UserData } from "@/types";
 import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
-import SkeletonLoader from "../ui/skeleton";
+import { Image, StyleSheet, Text } from "react-native";
+import SkeletonContent from "@/components/ui/skeleton-content";
 
 type ProfileSectionProps = {
   user: UserData;
@@ -9,34 +9,27 @@ type ProfileSectionProps = {
 };
 export default function ProfileSection({ user, loading }: ProfileSectionProps) {
   return (
-    <View>
-      {loading ? (
-        <SkeletonLoader
-          styles={{
-            skeleton: styles.avatar,
-          }}
-        />
-      ) : (
-        <Image
-          style={[styles.avatar]}
-          source={{
-            uri: user?.avatar,
-          }}
-        />
-      )}
-      {loading ? (
-        <SkeletonLoader
-          styles={{
-            skeleton: {
-              width: 120,
-              height: 20,
-            },
-          }}
-        />
-      ) : (
-        <Text>{user?.username}</Text>
-      )}
-    </View>
+    <SkeletonContent
+      isLoading={loading}
+      layout={[
+        { key: "1", style: styles.avatar },
+        {
+          key: "1",
+          style: {
+            width: 120,
+            height: 20,
+          },
+        },
+      ]}
+    >
+      <Image
+        style={[styles.avatar]}
+        source={{
+          uri: user?.avatar,
+        }}
+      />
+      <Text>{user?.username}</Text>
+    </SkeletonContent>
   );
 }
 
