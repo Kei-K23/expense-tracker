@@ -1,5 +1,5 @@
 import { ProfileActionType } from "@/types";
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import ProfileActionItem from "./profile-action-item";
 import { colors } from "@/constants/Colors";
@@ -11,11 +11,13 @@ import { Models } from "react-native-appwrite";
 import { router } from "expo-router";
 
 export default function ProfileActionsContainer() {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const showAlert = useShowErrorAlert();
 
   // Logout user handler
   const logoutHandler = async () => {
     try {
+      setIsLoading(true);
       // Get session from storage and logout user from Appwrite
       const session = await getStoreData<Models.Session>(
         keysForStorage.session
@@ -28,6 +30,8 @@ export default function ProfileActionsContainer() {
       showAlert({
         message: e.message,
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -50,7 +54,7 @@ export default function ProfileActionsContainer() {
   return (
     <View style={[styles.container]}>
       {actions.map((action) => (
-        <ProfileActionItem action={action} />
+        <ProfileActionItem action={action} isLoading={isLoading} />
       ))}
     </View>
   );

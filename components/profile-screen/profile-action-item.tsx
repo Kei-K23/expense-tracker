@@ -7,12 +7,20 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 type ProfileActionItemProps = {
   action: ProfileActionType;
+  isLoading: boolean;
 };
-export default function ProfileActionItem({ action }: ProfileActionItemProps) {
+export default function ProfileActionItem({
+  action,
+  isLoading,
+}: ProfileActionItemProps) {
   return (
     <TouchableOpacity
+      disabled={isLoading}
       key={action.title}
-      style={[styles.container]}
+      style={[
+        styles.container,
+        isLoading ? styles.containerGray : styles.containerWhite,
+      ]}
       onPress={action.handler}
     >
       <View
@@ -27,7 +35,9 @@ export default function ProfileActionItem({ action }: ProfileActionItemProps) {
         {/* @ts-ignore */}
         <Ionicons name={action.icon} size={20} color={action.iconColor} />
       </View>
-      <Text style={styles.title}>{action.title}</Text>
+      <Text style={isLoading ? styles.textGray : styles.title}>
+        {action.title}
+      </Text>
     </TouchableOpacity>
   );
 }
@@ -39,12 +49,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 10,
     paddingVertical: 10,
-    backgroundColor: "#fff",
     marginBottom: 10,
     borderRadius: 10,
     borderWidth: 1,
     borderColor: colors.gray[100],
     gap: 7,
+  },
+  containerWhite: {
+    backgroundColor: "#fff",
+  },
+  containerGray: {
+    backgroundColor: colors.gray[100],
   },
   iconContainer: {
     width: 35,
@@ -58,5 +73,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: fontSize.text,
     fontWeight: "600",
+  },
+  textGray: {
+    fontSize: fontSize.text,
+    fontWeight: "600",
+    color: colors.gray[300],
   },
 });
