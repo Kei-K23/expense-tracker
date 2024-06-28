@@ -2,6 +2,8 @@ import { account, appwriteConfig, avatars, databases } from "@/lib/appWrite";
 import { ID, Query } from "react-native-appwrite";
 import { uploadFile } from "./file-storage";
 import { UserData, UserType } from "@/types";
+import { removeStoredData } from "@/lib/async-storeage";
+import { keysForStorage } from "@/constants/Keys";
 
 export const registerUserAccountWithPhoneNumber = async (phone: string) => {
 
@@ -43,8 +45,16 @@ export const accountVerification = async (code: string, userId: string) => {
         if (!session) throw new Error("Account cannot be verified");
 
         return session;
-    } catch (e) {
+    } catch (e: any) {
         throw new Error("Something went wrong when account verification");
+    }
+}
+
+const deleteSession = async (session: string) => {
+    try {
+        await account.deleteSession(session);
+    } catch (e: any) {
+        throw new Error("Something went wrong when deleting session");
     }
 }
 
@@ -107,3 +117,14 @@ export const getUserById = async (id: string) => {
     }
 }
 
+export const logoutUser = async (session: string) => {
+    try {
+        // Delete / de-active session from server
+        await deleteSession(session);
+
+        // Remove session data in local storage
+        await removeStoredData(keysForStorage.session);
+    } catch (e: any) {
+        throw new Error("Something went wrong when logout the user");
+    }
+}

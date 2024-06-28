@@ -40,3 +40,11 @@ export type BudgetType = {
     user: UserData | null;
     type: string
 }
+
+export type ProfileActionType = {
+    title: string;
+    icon: string;
+    handler: () => void;
+    iconColor: string;
+    iconContainerColor: string;
+}

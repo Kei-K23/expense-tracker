@@ -1,7 +1,9 @@
 import { UserData } from "@/types";
 import React from "react";
-import { Image, StyleSheet, Text } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import SkeletonContent from "@/components/ui/skeleton-content";
+import { colors } from "@/constants/Colors";
+import { fontSize } from "@/constants/Style";
 
 type ProfileSectionProps = {
   user: UserData;
@@ -16,8 +18,12 @@ export default function ProfileSection({ user, loading }: ProfileSectionProps) {
           uri: user?.avatar,
         }}
       />
-      <Text aria-ignore={true}>Username</Text>
-      <Text style={styles.name}>{user?.username}</Text>
+      <View>
+        <Text aria-ignore={true} style={styles.username}>
+          Username
+        </Text>
+        <Text style={styles.name}>{user?.username}</Text>
+      </View>
     </SkeletonContent>
   );
 }
@@ -27,6 +33,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
     paddingHorizontal: 20,
     paddingVertical: 20,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
   },
   avatar: {
     width: 70,
@@ -37,5 +47,11 @@ const styles = StyleSheet.create({
   name: {
     width: 70,
     height: 20,
+    fontSize: fontSize.headerTiny,
+    fontWeight: "800",
+  },
+  username: {
+    color: colors.gray[300],
+    marginBottom: 5,
   },
 });
