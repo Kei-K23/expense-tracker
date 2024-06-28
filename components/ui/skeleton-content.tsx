@@ -8,22 +8,15 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
-type LayoutItem = {
-  key: string;
-  style?: ViewStyle;
-};
-
 type SkeletonContentProps = {
   isLoading: boolean;
   containerStyle?: StyleProp<ViewStyle>;
-  layout: LayoutItem[];
   children: React.ReactNode;
 };
 
 export default function SkeletonContent({
   isLoading,
   containerStyle,
-  layout,
   children,
 }: SkeletonContentProps) {
   const translateX = useSharedValue(-1000);
@@ -43,19 +36,37 @@ export default function SkeletonContent({
     };
   });
 
+  // Manipulate children elements
+  const modifiedChildren = React.Children.map(children, (child, index) => {
+    // Check if the child is valid react element
+    if (React.isValidElement(child)) {
+      // Skip and return original child element if aria-ignore prop is set to true
+      // Add key prop to ensure stable rendering across renders
+      if (child.props["aria-ignore"]) {
+        child.key = index.toString();
+        return child;
+      } else {
+        // Skeleton component render here
+        const existingStyle = child.props.style;
+        return (
+          <View style={[styles.skeleton, existingStyle]}>
+            <Animated.View style={[styles.skeletonOverlay, animatedStyle]} />
+          </View>
+        );
+      }
+    } else {
+      // No Skeleton component here
+      // Return original child element if not a valid React element
+      return child;
+    }
+  });
+
+  // Return original children if not loading
   if (!isLoading) {
     return <View style={containerStyle}>{children}</View>;
   }
 
-  return (
-    <View style={[containerStyle]}>
-      {layout.map((item) => (
-        <View key={item.key} style={[styles.skeleton, item.style]}>
-          <Animated.View style={[styles.skeletonOverlay, animatedStyle]} />
-        </View>
-      ))}
-    </View>
-  );
+  return <View style={[containerStyle]}>{modifiedChildren}</View>;
 }
 
 const styles = StyleSheet.create({

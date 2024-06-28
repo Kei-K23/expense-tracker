@@ -9,35 +9,33 @@ type ProfileSectionProps = {
 };
 export default function ProfileSection({ user, loading }: ProfileSectionProps) {
   return (
-    <SkeletonContent
-      isLoading={loading}
-      layout={[
-        { key: "1", style: styles.avatar },
-        {
-          key: "1",
-          style: {
-            width: 120,
-            height: 20,
-          },
-        },
-      ]}
-    >
+    <SkeletonContent containerStyle={styles.container} isLoading={loading}>
       <Image
         style={[styles.avatar]}
         source={{
           uri: user?.avatar,
         }}
       />
-      <Text>{user?.username}</Text>
+      <Text aria-ignore={true}>Username</Text>
+      <Text style={styles.name}>{user?.username}</Text>
     </SkeletonContent>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    marginTop: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+  },
   avatar: {
-    width: 100,
-    height: 100,
+    width: 70,
+    height: 70,
     borderRadius: 50,
     overflow: "hidden",
+  },
+  name: {
+    width: 70,
+    height: 20,
   },
 });

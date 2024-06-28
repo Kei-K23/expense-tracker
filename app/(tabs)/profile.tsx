@@ -2,7 +2,7 @@ import ProfileSection from "@/components/profile-screen/profile-section";
 import { defaultStyles } from "@/constants/Style";
 import useAuthUser from "@/hooks/use-auth-user";
 import useShowErrorAlert from "@/hooks/use-show-error-alert";
-import React, { useState } from "react";
+import React from "react";
 import { SafeAreaView } from "react-native";
 
 export default function ProfileScreen() {
