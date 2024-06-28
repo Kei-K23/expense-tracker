@@ -36,8 +36,6 @@ export default function useRedirectScreen() {
               if (userAccount) {
                 // Check budgets exist
                 // If has existing budget then navigate to main home screen
-                console.log("here 1");
-
                 if (budgets.documents.length > 0) {
                   router.push("/home");
                 } else {

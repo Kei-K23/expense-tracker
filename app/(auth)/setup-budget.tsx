@@ -3,16 +3,16 @@ import FormField from "@/components/ui/form-field";
 import { colors } from "@/constants/Colors";
 import { fontSize } from "@/constants/Style";
 import { createBudget } from "@/db/budget";
-import { getSignedInUser, getUserById } from "@/db/user";
+import useAuthUser from "@/hooks/use-auth-user";
 import useShowErrorAlert from "@/hooks/use-show-error-alert";
-import { BudgetType, User } from "@/types";
+import { BudgetType } from "@/types";
 import { router } from "expo-router";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 
 export default function SetupBudgetScreen() {
   const showAlert = useShowErrorAlert();
-  const [user, setUser] = useState<User>();
+  const { user } = useAuthUser();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [budget, setBudget] = useState<BudgetType>({
@@ -75,20 +75,6 @@ export default function SetupBudgetScreen() {
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    // Get user account id from session that store in local storage
-    (async () => {
-      // Get signed in user account
-      const singedUser = await getSignedInUser();
-
-      if (singedUser) {
-        // Get user account by id
-        const userAccount = await getUserById(singedUser.$id);
-        setUser(userAccount);
-      }
-    })();
-  }, []);
 
   return (
     <SafeAreaView style={[styles.container]}>

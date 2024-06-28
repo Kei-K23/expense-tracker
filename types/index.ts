@@ -14,6 +14,15 @@ export type UserSignIn = {
 
 export type User = Models.Document & UserType
 
+export type UserData = Models.Document & {
+    username: string;
+    password: string;
+    email: string;
+    accountId: string;
+    phone: string;
+    avatar: string;
+}
+
 export type UserType = {
     username: string;
     password: string;
@@ -28,6 +37,6 @@ export type Budget = Models.Document & BudgetType
 export type BudgetType = {
     name: string;
     balance: number;
-    user: User | null;
+    user: UserData | null;
     type: string
 }
