@@ -26,8 +26,6 @@ export const getTotalBalanceOfBudgetsByUserId = async (userId: string) => {
             Query.orderDesc("$createdAt"),
         ]);
 
-        console.log(data.documents);
-
         return data.documents.reduce((acc, cur) => acc += cur.balance, 0);
     } catch (e) {
         console.log(e);

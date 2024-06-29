@@ -41,9 +41,12 @@ export const colors = {
     300: "#FD3C4A"
   },
   milk: {
-    100: "#FFF6E5"
+    100: "#fcf6eb"
   },
   green: {
     100: "#00A86B"
+  },
+  blue: {
+    100: "#0077FF"
   }
 };
