@@ -1,3 +1,4 @@
+import { fontSize } from "@/constants/Style";
 import { TransactionData } from "@/types";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
@@ -21,8 +22,10 @@ export default function TransactionHeader({
         },
       ]}
     >
-      <Text>How much?</Text>
-      <Text>{balance}</Text>
+      <View style={[styles.subContainer]}>
+        <Text style={[styles.title]}>How much?</Text>
+        <Text style={[styles.balance]}>${balance}</Text>
+      </View>
     </View>
   );
 }
@@ -31,5 +34,23 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: "100%",
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-end",
+    alignItems: "flex-start",
+    marginBottom: 20,
+  },
+  subContainer: {
+    marginBottom: 40,
+  },
+  title: {
+    color: "#fff",
+  },
+  balance: {
+    color: "#fff",
+    fontSize: fontSize.headerBold,
+    fontWeight: "800",
   },
 });

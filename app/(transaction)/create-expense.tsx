@@ -4,7 +4,7 @@ import { colors } from "@/constants/Colors";
 import { defaultStyles } from "@/constants/Style";
 import { TransactionData } from "@/types";
 import React, { useState } from "react";
-import { SafeAreaView } from "react-native";
+import { SafeAreaView, StyleSheet } from "react-native";
 
 export default function CreateExpenseScreen() {
   const [transaction, setTransaction] = useState<TransactionData>({
@@ -25,13 +25,21 @@ export default function CreateExpenseScreen() {
   };
 
   return (
-    <SafeAreaView style={[defaultStyles.layout]}>
-      <CustomNavHeader title="Expense" />
+    <SafeAreaView style={[styles.container]}>
+      <CustomNavHeader title="Expense" bgColor={colors.danger[300]} />
       <TransactionHeader
         balance={transaction.balance}
         handleOnChange={handleOnChange}
-        bgColor={colors.green[100]}
+        bgColor={colors.danger[300]}
       />
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+  },
+});
