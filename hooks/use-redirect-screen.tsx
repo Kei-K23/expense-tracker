@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { getAllBudgetByUser } from "@/db/budget";
-import { getSignedInUser, getUserById } from "@/db/user";
-import { getStoreData } from "@/lib/async-storeage";
+import { getUserById } from "@/db/user";
+import { getStoreData, removeStoredData } from "@/lib/async-storeage";
 import { keysForStorage } from "@/constants/Keys";
 import { Models } from "react-native-appwrite";
 import { router } from "expo-router";
@@ -12,15 +12,19 @@ export default function useRedirectScreen() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const singedUser = await getSignedInUser();
-        const userAccount = await getUserById(singedUser.$id);
+        const storageSessionData = await getStoreData<Models.Session>(
+          keysForStorage.session
+        );
 
-        const [storageSession, budgets] = await Promise.all([
-          getStoreData<Models.Session>(keysForStorage.session),
-          getAllBudgetByUser(userAccount.$id),
-        ]);
+        if (!storageSessionData) {
+          return;
+        }
 
-        const session = await account.getSession(storageSession?.$id!);
+        const userAccount = await getUserById(storageSessionData?.$id!);
+
+        const budgets = await getAllBudgetByUser(userAccount.$id);
+
+        const session = await account.getSession(storageSessionData?.$id!);
 
         // Check session exist
         if (session) {

@@ -5,11 +5,11 @@ import SkeletonContent from "@/components/ui/skeleton-content";
 import { colors } from "@/constants/Colors";
 import { fontSize } from "@/constants/Style";
 
-type ProfileSectionProps = {
+type ProfileHeaderProps = {
   user: UserData;
   loading: boolean;
 };
-export default function ProfileSection({ user, loading }: ProfileSectionProps) {
+export default function ProfileHeader({ user, loading }: ProfileHeaderProps) {
   return (
     <SkeletonContent containerStyle={styles.container} isLoading={loading}>
       <Image
@@ -31,7 +31,6 @@ export default function ProfileSection({ user, loading }: ProfileSectionProps) {
 const styles = StyleSheet.create({
   container: {
     marginTop: 20,
-    paddingHorizontal: 20,
     paddingVertical: 20,
     display: "flex",
     flexDirection: "row",

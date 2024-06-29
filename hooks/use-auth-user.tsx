@@ -18,6 +18,7 @@ export default function useAuthUser() {
         if (singedUser) {
           // Get user account by id
           const userAccount = await getUserById(singedUser.$id);
+          console.log(userAccount);
 
           setUser(userAccount);
         }

@@ -1,5 +1,5 @@
 import ProfileActionsContainer from "@/components/profile-screen/profile-actions-container";
-import ProfileSection from "@/components/profile-screen/profile-section";
+import ProfileHeader from "@/components/profile-screen/profile-header";
 import { defaultStyles } from "@/constants/Style";
 import useAuthUser from "@/hooks/use-auth-user";
 import React from "react";
@@ -9,7 +9,7 @@ export default function ProfileScreen() {
   const { user, loading } = useAuthUser();
   return (
     <SafeAreaView style={defaultStyles.layout}>
-      <ProfileSection user={user!} loading={loading} />
+      <ProfileHeader user={user!} loading={loading} />
       <ProfileActionsContainer />
     </SafeAreaView>
   );

@@ -5,9 +5,11 @@ import { keysForStorage } from "@/constants/Keys";
 import { defaultStyles, fontSize } from "@/constants/Style";
 import {
   accountVerification,
+  getUserById,
   registerUserAccountWithPhoneNumber,
 } from "@/db/user";
 import useShowErrorAlert from "@/hooks/use-show-error-alert";
+import { account } from "@/lib/appWrite";
 import { storeData } from "@/lib/async-storeage";
 import { router, useLocalSearchParams, useNavigation } from "expo-router";
 import React, { useEffect, useState } from "react";
@@ -51,15 +53,26 @@ export default function AccountVerifyScreen() {
       const session = await accountVerification(code, userId);
 
       if (session.$id) {
+        // Clear the fields
+        setCode("");
+
         // Store valid session to async storage
         await storeData(keysForStorage.session, session);
+
+        // Get user account for redirect to main home screen when user already setup their account
+        const signedUser = await account.get();
+        const existingUser = await getUserById(signedUser.$id);
+
+        // If user already registered and have account
+        if (existingUser) {
+          // Navigate to main home screen
+          router.push("/home");
+          return;
+        }
 
         showAlert({
           message: "Successfully verify user account",
         });
-
-        // Clear the fields
-        setCode("");
 
         // Navigate to account setup screen
         router.push("/setup-user-account");

@@ -62,7 +62,6 @@ export default function ProfileActionsContainer() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 20,
     paddingVertical: 20,
   },
 });

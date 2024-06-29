@@ -29,6 +29,36 @@ export const registerUserAccountWithPhoneNumber = async (phone: string) => {
     }
 }
 
+export const loginWithEmailPassword = async (email: string, password: string) => {
+
+    // If password does not match then return
+    if (email === "" && password === "") {
+        throw new Error("Credentials cannot be empty");
+    }
+    try {
+
+        // Find existing user with email and password
+        const existingUser = await getUserByEmailAndPassword(email.trim(), password.trim());
+
+        if (!existingUser) {
+            throw new Error("Cannot find user to login");
+        }
+
+        const session = await account.createEmailPasswordSession(
+            email.trim(),
+            password.trim()
+        );
+
+        if (!session) throw new Error("Cannot login");
+
+        return session;
+    } catch (e: any) {
+        // TODO delete log in production
+        console.log(e);
+        throw new Error("Something went wrong when login");
+    }
+}
+
 export const accountVerification = async (code: string, userId: string) => {
 
     // If password does not match then return
@@ -46,6 +76,8 @@ export const accountVerification = async (code: string, userId: string) => {
 
         return session;
     } catch (e: any) {
+        console.log(e);
+
         throw new Error("Something went wrong when account verification");
     }
 }
@@ -107,6 +139,23 @@ export const getUserById = async (id: string) => {
         // Query to get user account by id
         const data = await databases.listDocuments<UserData>(appwriteConfig.databaseId, appwriteConfig.userCollectionId, [
             Query.equal("accountId", id)
+        ]);
+
+        // Return first index of user document list
+        return data.documents[0];
+    } catch (e) {
+        console.log(e);
+        throw new Error("Something went wrong when getting user");
+    }
+}
+
+
+export const getUserByEmailAndPassword = async (email: string, password: string) => {
+    try {
+        // Query to get user account by id
+        const data = await databases.listDocuments<UserData>(appwriteConfig.databaseId, appwriteConfig.userCollectionId, [
+            Query.equal("email", email),
+            Query.equal("password", password),
         ]);
 
         // Return first index of user document list
