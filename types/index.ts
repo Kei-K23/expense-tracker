@@ -50,3 +50,25 @@ export type ProfileActionType = {
     iconColor: string;
     iconContainerColor: string;
 }
+
+export type TransactionType = {
+    name: string;
+    description?: string;
+    type: string;
+    budgets: Budget | null;
+    attachmentURL: string
+    balance: number;
+    category: string;
+}
+
+export type Transaction = Models.Document & TransactionType;
+
+export type TransactionData = {
+    name: string;
+    description?: string;
+    type: string;
+    budgets: Budget | null;
+    balance: number;
+    attachmentURL: DocumentPickerAsset | null;
+    category: string;
+}
