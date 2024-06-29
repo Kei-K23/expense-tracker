@@ -38,5 +38,12 @@ export const colors = {
   danger: {
     100: "#db2121",
     200: "#f7c9c6",
+    300: "#FD3C4A"
+  },
+  milk: {
+    100: "#FFF6E5"
+  },
+  green: {
+    100: "#00A86B"
   }
 };

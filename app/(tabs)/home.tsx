@@ -14,12 +14,12 @@ export default function HomeScreen() {
       const totalBalanceData = await getTotalBalanceOfBudgetsByUserId(
         user?.$id!
       );
-      setTotalBalance(totalBalanceData ?? 0);
+      setTotalBalance(totalBalanceData);
     })();
   }, []);
 
   return (
-    <SafeAreaView style={defaultStyles.layout}>
+    <SafeAreaView>
       <HomeHeader user={user!} totalBalance={totalBalance!} />
     </SafeAreaView>
   );

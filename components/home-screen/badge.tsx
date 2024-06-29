@@ -40,7 +40,7 @@ export default function Badge({
 const styles = StyleSheet.create({
   default: {
     backgroundColor: colors.primary[300],
-    borderRadius: 10,
+    borderRadius: 20,
     paddingHorizontal: 14,
     paddingVertical: 7,
     overflow: "hidden",
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginVertical: 5,
-    gap: 5,
+    gap: 10,
   },
   iconContainer: {
     width: 35,
