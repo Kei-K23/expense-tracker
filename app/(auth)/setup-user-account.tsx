@@ -6,7 +6,7 @@ import { keysForStorage } from "@/constants/Keys";
 import { defaultStyles, fontSize } from "@/constants/Style";
 import { createUserAccount, getSignedInUser } from "@/db/user";
 import useShowErrorAlert from "@/hooks/use-show-error-alert";
-import { getStoreData } from "@/lib/async-storeage";
+import { getStoreData, storeData } from "@/lib/async-storeage";
 import { UserType } from "@/types";
 import { getDocumentAsync } from "expo-document-picker";
 import { router } from "expo-router";
@@ -110,6 +110,9 @@ export default function SetupUserAccountScreen() {
       const newUser = await createUserAccount(userAccount);
 
       if (newUser.$id) {
+        // Store the newly created user
+        await storeData(keysForStorage.user, newUser);
+
         showAlert({
           message: "Account setup successfully",
         });
@@ -138,7 +141,7 @@ export default function SetupUserAccountScreen() {
       ]);
 
       if (session) {
-        setUserId(session.userId);
+        setUserId(session.$id);
       }
 
       if (singedUser) {

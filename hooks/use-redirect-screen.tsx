@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { getAllBudgetByUser } from "@/db/budget";
-import { getUserById } from "@/db/user";
+import { getUserById, logoutUser } from "@/db/user";
 import { getStoreData, removeStoredData } from "@/lib/async-storeage";
 import { keysForStorage } from "@/constants/Keys";
 import { Models } from "react-native-appwrite";
@@ -19,7 +19,6 @@ export default function useRedirectScreen() {
         if (!storageSessionData) {
           return;
         }
-
         const userAccount = await getUserById(storageSessionData?.$id!);
 
         const budgets = await getAllBudgetByUser(userAccount.$id);
@@ -34,7 +33,6 @@ export default function useRedirectScreen() {
             const now = new Date();
             // Check session is active
             if (expirationDate > now) {
-              console.log("Session is active.");
               // If user account is already created
               // Navigate to setup budget screen
               if (userAccount) {
@@ -43,10 +41,6 @@ export default function useRedirectScreen() {
                 if (budgets.documents.length > 0) {
                   router.push("/home");
                 } else {
-                  console.log(budgets.documents);
-
-                  console.log("here 2");
-
                   // Navigate to initial setup budget for user account
                   router.push("/setup-budget");
                 }

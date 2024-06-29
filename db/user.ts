@@ -22,9 +22,6 @@ export const registerUserAccountWithPhoneNumber = async (phone: string) => {
 
         return token.userId;
     } catch (e: any) {
-        // TODO delete log in production
-        console.log(e);
-
         throw new Error("Something went wrong when sign up");
     }
 }
@@ -103,6 +100,10 @@ export const createUserAccount = async ({ username, password, phone, email, acco
             userAvatar = avatars.getInitials(username);
         }
 
+        if (!accountId) {
+            throw new Error("Account id is missing");
+        }
+        //! TODO: check why accountId is null
         // Create user account
         const newUser = await databases.createDocument(
             appwriteConfig.databaseId,

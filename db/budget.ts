@@ -26,6 +26,8 @@ export const getTotalBalanceOfBudgetsByUserId = async (userId: string) => {
             Query.orderDesc("$createdAt"),
         ]);
 
+        console.log(data.documents);
+
         return data.documents.reduce((acc, cur) => acc += cur.balance, 0);
     } catch (e) {
         console.log(e);
@@ -36,6 +38,9 @@ export const getTotalBalanceOfBudgetsByUserId = async (userId: string) => {
 //! Must TODO : Change balance type to work with float data types
 export const createBudget = async ({ name, balance, type, user }: BudgetType) => {
     try {
+        if (!user?.$id) {
+            throw new Error("Cannot create budget. User id is missing");
+        }
         // Create new budget for user
         const newBudget = await databases.createDocument(
             appwriteConfig.databaseId,

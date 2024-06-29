@@ -4,7 +4,7 @@ import { colors } from "@/constants/Colors";
 import { defaultStyles, fontSize } from "@/constants/Style";
 import { registerUserAccountWithPhoneNumber } from "@/db/user";
 import useShowErrorAlert from "@/hooks/use-show-error-alert";
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
@@ -73,30 +73,6 @@ export default function SignUpScreen() {
         callbackFn={handleOnPress}
         isLoading={isLoading}
       />
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: 20,
-        }}
-      >
-        <Text
-          style={{
-            color: colors.gray[300],
-          }}
-        >
-          Already have an account?{" "}
-        </Text>
-        <Link
-          style={{
-            color: colors.primary[100],
-          }}
-          href={"/login"}
-        >
-          Login here!
-        </Link>
-      </View>
       <StatusBar backgroundColor="#161622" style="light" />
     </SafeAreaView>
   );

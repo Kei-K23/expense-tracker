@@ -34,13 +34,6 @@ export default function WelcomeScreen() {
             router.push("/sign-up");
           }}
         />
-        <Button
-          title="Login"
-          variant="secondary"
-          callbackFn={() => {
-            router.push("/login");
-          }}
-        />
       </View>
       <StatusBar backgroundColor="#161622" style="light" />
     </SafeAreaView>

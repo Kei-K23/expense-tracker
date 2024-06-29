@@ -1,6 +1,9 @@
-import { getSignedInUser, getUserById } from "@/db/user";
+import { keysForStorage } from "@/constants/Keys";
+import { getUserById } from "@/db/user";
+import { getStoreData } from "@/lib/async-storeage";
 import { UserData } from "@/types";
 import { useEffect, useState } from "react";
+import { Models } from "react-native-appwrite";
 
 export default function useAuthUser() {
   const [user, setUser] = useState<UserData>();
@@ -12,13 +15,14 @@ export default function useAuthUser() {
     (async () => {
       try {
         setLoading(true);
-        // Get signed in user account
-        const singedUser = await getSignedInUser();
+        // Get session information from local storage
+        const session = await getStoreData<Models.Session>(
+          keysForStorage.session
+        );
 
-        if (singedUser) {
+        if (session) {
           // Get user account by id
-          const userAccount = await getUserById(singedUser.$id);
-          console.log(userAccount);
+          const userAccount = await getUserById(session.$id);
 
           setUser(userAccount);
         }

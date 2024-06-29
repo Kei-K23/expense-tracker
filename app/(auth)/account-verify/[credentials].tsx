@@ -9,7 +9,6 @@ import {
   registerUserAccountWithPhoneNumber,
 } from "@/db/user";
 import useShowErrorAlert from "@/hooks/use-show-error-alert";
-import { account } from "@/lib/appWrite";
 import { storeData } from "@/lib/async-storeage";
 import { router, useLocalSearchParams, useNavigation } from "expo-router";
 import React, { useEffect, useState } from "react";
@@ -60,11 +59,13 @@ export default function AccountVerifyScreen() {
         await storeData(keysForStorage.session, session);
 
         // Get user account for redirect to main home screen when user already setup their account
-        const signedUser = await account.get();
-        const existingUser = await getUserById(signedUser.$id);
+        const existingUser = await getUserById(session.$id);
 
         // If user already registered and have account
         if (existingUser) {
+          // Store the newly created user
+          await storeData(keysForStorage.user, existingUser);
+
           // Navigate to main home screen
           router.push("/home");
           return;

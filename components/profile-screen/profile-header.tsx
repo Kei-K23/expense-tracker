@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   name: {
-    width: 70,
+    width: "100%",
     height: 20,
     fontSize: fontSize.headerTiny,
     fontWeight: "800",

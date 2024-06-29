@@ -21,6 +21,8 @@ export type UserData = Models.Document & {
     accountId: string;
     phone: string;
     avatar: string;
+    incomes?: number;
+    expenses?: number;
 }
 
 export type UserType = {
