@@ -51,7 +51,6 @@ const styles = StyleSheet.create({
   text: {
     fontSize: fontSize.text,
     fontWeight: "900",
-    textTransform: "capitalize",
   },
   primary: {
     backgroundColor: colors.primary[100],

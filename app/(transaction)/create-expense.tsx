@@ -5,7 +5,7 @@ import FileUploadPicker from "@/components/ui/file-upload-picker";
 import FormField from "@/components/ui/form-field";
 import { colors } from "@/constants/Colors";
 import { keysForStorage } from "@/constants/Keys";
-import { getAllWalletByUser } from "@/db/budget";
+import { getAllWalletByUser } from "@/db/wallets";
 import useShowErrorAlert from "@/hooks/use-show-error-alert";
 import { getStoreData } from "@/lib/async-storeage";
 import { TransactionData, User } from "@/types";

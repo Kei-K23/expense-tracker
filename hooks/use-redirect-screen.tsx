@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { getAllWalletByUser } from "@/db/budget";
+import { getAllWalletByUser } from "@/db/wallets";
 import { getUserById, logoutUser } from "@/db/user";
 import { getStoreData, removeStoredData } from "@/lib/async-storeage";
 import { keysForStorage } from "@/constants/Keys";

@@ -2,7 +2,7 @@ import Button from "@/components/ui/button";
 import FormField from "@/components/ui/form-field";
 import { colors } from "@/constants/Colors";
 import { fontSize } from "@/constants/Style";
-import { createWallet } from "@/db/budget";
+import { createWallet } from "@/db/wallets";
 import useAuthUser from "@/hooks/use-auth-user";
 import useShowErrorAlert from "@/hooks/use-show-error-alert";
 import { WalletType } from "@/types";
