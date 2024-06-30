@@ -43,21 +43,6 @@ export default function TransactionActionSheet({ sheetId }: SheetProps) {
         <View>
           <TouchableOpacity
             style={[styles.actionItem]}
-            onPress={() => handelOnPress("/create-budget")}
-          >
-            <Text
-              style={[
-                styles.actionItemText,
-                {
-                  color: colors.green[100],
-                },
-              ]}
-            >
-              Budgets
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.actionItem]}
             onPress={() => handelOnPress("/create-income")}
           >
             <Text

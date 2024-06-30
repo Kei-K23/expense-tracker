@@ -1,18 +1,36 @@
-export default function useCurrentMonth() {
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
+import { useState } from "react";
 
-  return monthNames[new Date().getMonth()];
-}
+const useMonth = () => {
+  const [currentDate, setCurrentDate] = useState(new Date());
+
+  const getNextMonth = () => {
+    setCurrentDate((prevDate) => {
+      const nextMonth = new Date(
+        prevDate.getFullYear(),
+        prevDate.getMonth() + 1,
+        1
+      );
+      return nextMonth;
+    });
+  };
+
+  const getPreviousMonth = () => {
+    setCurrentDate((prevDate) => {
+      const prevMonth = new Date(
+        prevDate.getFullYear(),
+        prevDate.getMonth() - 1,
+        1
+      );
+      return prevMonth;
+    });
+  };
+
+  const currentMonth = currentDate.toLocaleString("default", {
+    month: "long",
+    year: "numeric",
+  });
+
+  return { currentMonth, getNextMonth, getPreviousMonth };
+};
+
+export default useMonth;

@@ -1,6 +1,17 @@
+import BudgetHeader from "@/components/budget-screen/budget-header";
+import useCurrentMonth from "@/hooks/use-current-month";
 import React from "react";
 import { SafeAreaView } from "react-native";
 
 export default function BudgetScreen() {
-  return <SafeAreaView></SafeAreaView>;
+  const { currentMonth, getNextMonth, getPreviousMonth } = useCurrentMonth();
+  return (
+    <SafeAreaView>
+      <BudgetHeader
+        month={currentMonth}
+        getNextMonth={getNextMonth}
+        getPreviousMonth={getPreviousMonth}
+      />
+    </SafeAreaView>
+  );
 }

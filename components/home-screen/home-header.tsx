@@ -11,7 +11,7 @@ type HomeHeaderProps = {
   totalBalance: number;
 };
 export default function HomeHeader({ user, totalBalance }: HomeHeaderProps) {
-  const month = useCurrentMonth();
+  const { currentMonth } = useCurrentMonth();
 
   return (
     <View style={[styles.container]}>
@@ -22,7 +22,7 @@ export default function HomeHeader({ user, totalBalance }: HomeHeaderProps) {
             uri: user?.avatar,
           }}
         />
-        <Text style={[styles.month]}>{month}</Text>
+        <Text style={[styles.month]}>{currentMonth}</Text>
       </View>
       <Text style={[styles.accountBalance]}>Account Balance</Text>
       <Text style={[styles.totalBalance]}>${totalBalance || 0}</Text>

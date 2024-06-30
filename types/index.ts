@@ -70,3 +70,13 @@ export type TransactionData = {
     attachmentURL: DocumentPickerAsset | null;
     category: string;
 }
+
+export type BudgetType = {
+    name: string;
+    limitedAmount: number;
+    user: string;
+    receiveAlert: boolean;
+    createdMonth: string;
+}
+
+export type Budget = Models.Document & BudgetType;
