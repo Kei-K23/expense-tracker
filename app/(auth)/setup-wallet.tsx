@@ -31,20 +31,24 @@ export default function SetupWalletScreen() {
 
   const handleOnPress = async () => {
     // Check user id exists, if exists set to account id
-    if (user) {
-      setWallet({
-        ...wallet,
-        user: user,
-      });
-    } else {
+    if (!user) {
       showAlert({
         message: "User is missing",
       });
       return;
     }
 
+    const walletData = {
+      ...wallet,
+      user: user,
+    };
+
     // Check if fields have values to register
-    if (wallet.name === "" || wallet.balance < 0 || wallet.type === "") {
+    if (
+      walletData.name === "" ||
+      walletData.balance < 0 ||
+      walletData.type === ""
+    ) {
       showAlert({
         message: "Please fill in all the fields",
       });
@@ -54,7 +58,7 @@ export default function SetupWalletScreen() {
     try {
       setIsLoading(true);
       // new wallet creation
-      const newWallet = await createWallet(wallet);
+      const newWallet = await createWallet(walletData);
 
       if (newWallet.$id) {
         showAlert({

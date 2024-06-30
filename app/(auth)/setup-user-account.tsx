@@ -63,20 +63,19 @@ export default function SetupUserAccountScreen() {
   };
 
   const handleOnPress = async () => {
-    // Check user id exists, if exists set to account id
-    if (userId) {
-      setUserAccount({
-        ...userAccount,
-        accountId: userId,
-      });
-    } else {
+    // Check user id exists,
+    if (!userId) {
       showAlert({
         message: "User id is missing",
       });
       return;
     }
+    const account = {
+      ...userAccount,
+      accountId: userId,
+    };
     // Check phone number exists, if not show alert and exit the function
-    if (!userAccount.phone) {
+    if (!account.phone) {
       showAlert({
         message: "Phone number is missing",
       });
@@ -85,10 +84,10 @@ export default function SetupUserAccountScreen() {
 
     // Check if fields have values to register
     if (
-      userAccount.username === "" ||
-      userAccount.email === "" ||
-      userAccount.password === "" ||
-      userAccount.confirmPassword === ""
+      account.username === "" ||
+      account.email === "" ||
+      account.password === "" ||
+      account.confirmPassword === ""
     ) {
       showAlert({
         message: "Please fill in all the fields",
@@ -97,7 +96,7 @@ export default function SetupUserAccountScreen() {
     }
 
     // Password checking with confirm password
-    if (userAccount.password !== userAccount.confirmPassword) {
+    if (account.password !== account.confirmPassword) {
       showAlert({
         message: "Passwords do not match",
       });
@@ -107,7 +106,7 @@ export default function SetupUserAccountScreen() {
     try {
       setIsLoading(true);
       // User account creation
-      const newUser = await createUserAccount(userAccount);
+      const newUser = await createUserAccount(account);
 
       if (newUser.$id) {
         // Store the newly created user
