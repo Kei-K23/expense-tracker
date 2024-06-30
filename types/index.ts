@@ -72,11 +72,13 @@ export type TransactionData = {
 }
 
 export type BudgetType = {
+    color: string
     name: string;
     limitedAmount: number;
     user: string;
     receiveAlert: boolean;
     createdMonth: string;
+    expensedAmount?: number;
 }
 
 export type Budget = Models.Document & BudgetType;

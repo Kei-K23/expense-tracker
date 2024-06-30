@@ -7,6 +7,7 @@ import { colors } from "@/constants/Colors";
 import { keysForStorage } from "@/constants/Keys";
 import { createBudget } from "@/db/budgets";
 import useMonth from "@/hooks/use-month";
+import useRandomColor from "@/hooks/use-random-color";
 import useShowErrorAlert from "@/hooks/use-show-error-alert";
 import { getStoreData } from "@/lib/async-storeage";
 import { BudgetType, User } from "@/types";
@@ -15,11 +16,13 @@ import React, { useState } from "react";
 import { SafeAreaView, StyleSheet, View } from "react-native";
 
 export default function CreateBudgetScreen() {
+  const randomColor = useRandomColor();
   const showAlert = useShowErrorAlert();
   const { formatToMonthYear } = useMonth();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [budget, setBudget] = useState<BudgetType>({
+    color: "",
     name: "",
     limitedAmount: 0,
     user: "",
@@ -48,6 +51,9 @@ export default function CreateBudgetScreen() {
         });
         return;
       }
+
+      // Set color for the budget
+      handleOnChange("color", randomColor);
 
       // Create budget here
       const newBudget = await createBudget(budget);

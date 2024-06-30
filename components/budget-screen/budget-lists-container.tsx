@@ -1,20 +1,25 @@
 import { Budget } from "@/types";
 import React from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, RefreshControl, StyleSheet } from "react-native";
 import EmptyList from "../ui/empty-list";
+import BudgetListItem from "./budget-list-item";
 
 type BudgetListsContainerProps = {
   budgets: Budget[];
+  onRefresh: () => Promise<void>;
+  isRefreshing: boolean;
 };
 
 export default function BudgetListsContainer({
   budgets,
+  onRefresh,
+  isRefreshing,
 }: BudgetListsContainerProps) {
   return (
     <FlatList
       style={[style.container]}
       data={budgets}
-      renderItem={({ item }) => <View key={item.$id}>{item.name}</View>}
+      renderItem={({ item }) => <BudgetListItem item={item} />}
       keyExtractor={(item) => item.$id}
       ListEmptyComponent={() => (
         <EmptyList
@@ -22,6 +27,9 @@ export default function BudgetListsContainer({
           description="Let's make one so you in control."
         />
       )}
+      refreshControl={
+        <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+      }
     />
   );
 }

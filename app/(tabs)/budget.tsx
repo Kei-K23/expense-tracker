@@ -7,26 +7,37 @@ import useMonth from "@/hooks/use-month";
 import { getStoreData } from "@/lib/async-storeage";
 import { Budget, User } from "@/types";
 import { router } from "expo-router";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { SafeAreaView, View } from "react-native";
 
 export default function BudgetScreen() {
   const { currentMonth, getNextMonth, getPreviousMonth } = useMonth();
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [budgets, setBudgets] = useState<Budget[]>([]);
+
+  const fetchData = async () => {
+    const user = await getStoreData<User>(keysForStorage.user);
+    // Get all budget items from current month and user id
+    const budgetsData = await getAllBudgetsByUserIdAndMonth(
+      user?.$id!,
+      currentMonth
+    );
+    setBudgets(budgetsData.documents);
+  };
+
+  const onRefresh = useCallback(async () => {
+    setIsRefreshing(true);
+    await fetchData();
+    setIsRefreshing(false);
+  }, []);
 
   useEffect(() => {
     // Clear previous data before fetching new month's budgets
     setBudgets([]);
 
     (async () => {
-      const user = await getStoreData<User>(keysForStorage.user);
-      // Get all budget items from current month and user id
-      const budgetsData = await getAllBudgetsByUserIdAndMonth(
-        user?.$id!,
-        currentMonth
-      );
-
-      setBudgets(budgetsData.documents);
+      // Fetch data
+      await fetchData();
     })();
   }, [currentMonth]);
 
@@ -37,7 +48,11 @@ export default function BudgetScreen() {
         getNextMonth={getNextMonth}
         getPreviousMonth={getPreviousMonth}
       />
-      <BudgetListsContainer budgets={budgets} />
+      <BudgetListsContainer
+        budgets={budgets}
+        onRefresh={onRefresh}
+        isRefreshing={isRefreshing}
+      />
       <View
         style={{
           paddingHorizontal: 20,
