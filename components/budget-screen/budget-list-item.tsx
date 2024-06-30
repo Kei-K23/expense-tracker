@@ -1,6 +1,7 @@
 import { colors } from "@/constants/Colors";
 import { fontSize } from "@/constants/Style";
 import { Budget } from "@/types";
+import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { ProgressBar } from "react-native-paper";
@@ -13,15 +14,20 @@ export default function BudgetListItem({ item }: BudgetListItemProps) {
   return (
     <View style={[styles.container]}>
       <View style={[styles.subContainer]}>
-        <View
-          style={[
-            styles.indicator,
-            {
-              backgroundColor: item.color,
-            },
-          ]}
-        />
-        <Text style={[styles.name]}>{item.name}</Text>
+        <View style={[styles.subContainer]}>
+          <View
+            style={[
+              styles.indicator,
+              {
+                backgroundColor: item.color,
+              },
+            ]}
+          />
+          <Text style={[styles.name]}>{item.name}</Text>
+        </View>
+        {item.limitedAmount === item.expensedAmount && (
+          <Ionicons name="warning" size={22} color={colors.danger[100]} />
+        )}
       </View>
       <Text style={[styles.remaining]}>
         Remaining ${item.limitedAmount - (item.expensedAmount || 0)}
@@ -38,6 +44,9 @@ export default function BudgetListItem({ item }: BudgetListItemProps) {
       <Text style={[styles.remainingMessage]}>
         ${item.expensedAmount || 0} of ${item.limitedAmount}
       </Text>
+      {item.limitedAmount === item.expensedAmount && (
+        <Text style={[styles.warningText]}>You've exceed the limit!</Text>
+      )}
     </View>
   );
 }
@@ -54,6 +63,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
     gap: 5,
   },
   name: {
@@ -75,5 +85,9 @@ const styles = StyleSheet.create({
     width: 10,
     height: 10,
     borderRadius: 100,
+  },
+  warningText: {
+    marginTop: 5,
+    color: colors.danger[100],
   },
 });

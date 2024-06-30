@@ -21,6 +21,7 @@ export default function BudgetListsContainer({
       data={budgets}
       renderItem={({ item }) => <BudgetListItem item={item} />}
       keyExtractor={(item) => item.$id}
+      showsVerticalScrollIndicator={false}
       ListEmptyComponent={() => (
         <EmptyList
           title="You don't have a budget."
