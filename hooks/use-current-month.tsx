@@ -1,8 +1,10 @@
 import { useState } from "react";
 
-const useMonth = () => {
+export default function useMonth() {
+  // Get current date
   const [currentDate, setCurrentDate] = useState(new Date());
 
+  // Get next month
   const getNextMonth = () => {
     setCurrentDate((prevDate) => {
       const nextMonth = new Date(
@@ -14,6 +16,7 @@ const useMonth = () => {
     });
   };
 
+  // Get previous month
   const getPreviousMonth = () => {
     setCurrentDate((prevDate) => {
       const prevMonth = new Date(
@@ -25,12 +28,12 @@ const useMonth = () => {
     });
   };
 
+  // Format current month as "Month Year" e.g. January 2022
   const currentMonth = currentDate.toLocaleString("default", {
     month: "long",
     year: "numeric",
   });
 
+  // Return
   return { currentMonth, getNextMonth, getPreviousMonth };
-};
-
-export default useMonth;
+}

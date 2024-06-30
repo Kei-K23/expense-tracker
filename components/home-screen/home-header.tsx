@@ -1,17 +1,17 @@
-import useCurrentMonth from "@/hooks/use-current-month";
 import { UserData } from "@/types";
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import Badge from "./badge";
 import { colors } from "@/constants/Colors";
 import { fontSize } from "@/constants/Style";
+import useMonth from "@/hooks/use-current-month";
 
 type HomeHeaderProps = {
   user: UserData;
   totalBalance: number;
 };
 export default function HomeHeader({ user, totalBalance }: HomeHeaderProps) {
-  const { currentMonth } = useCurrentMonth();
+  const { currentMonth } = useMonth();
 
   return (
     <View style={[styles.container]}>
