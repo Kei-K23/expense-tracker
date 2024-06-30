@@ -59,7 +59,7 @@ export default function AccountVerifyScreen() {
         await storeData(keysForStorage.session, session);
 
         // Get user account for redirect to main home screen when user already setup their account
-        const existingUser = await getUserById(session.$id);
+        const existingUser = await getUserById(session.userId);
 
         // If user already registered and have account
         if (existingUser) {

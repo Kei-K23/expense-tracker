@@ -140,7 +140,7 @@ export default function SetupUserAccountScreen() {
       ]);
 
       if (session) {
-        setUserId(session.$id);
+        setUserId(session.userId);
       }
 
       if (singedUser) {

@@ -22,7 +22,7 @@ export default function useAuthUser() {
 
         if (session) {
           // Get user account by id
-          const userAccount = await getUserById(session.$id);
+          const userAccount = await getUserById(session.userId);
 
           setUser(userAccount);
         }

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { getAllWalletByUser } from "@/db/wallets";
-import { getUserById, logoutUser } from "@/db/user";
-import { getStoreData, removeStoredData } from "@/lib/async-storeage";
+import { getUserById } from "@/db/user";
+import { getStoreData } from "@/lib/async-storeage";
 import { keysForStorage } from "@/constants/Keys";
 import { Models } from "react-native-appwrite";
 import { router } from "expo-router";
@@ -19,7 +19,12 @@ export default function useRedirectScreen() {
         if (!storageSessionData) {
           return;
         }
-        const userAccount = await getUserById(storageSessionData?.$id!);
+
+        const userAccount = await getUserById(storageSessionData?.userId!);
+
+        if (!userAccount) {
+          return;
+        }
 
         const budgets = await getAllWalletByUser(userAccount.$id);
 
@@ -53,7 +58,7 @@ export default function useRedirectScreen() {
         }
       } catch (error) {
         console.error("Error fetching data:", error);
-        router.push("/");
+        return;
       }
     };
 
