@@ -118,7 +118,7 @@ export default function SetupUserAccountScreen() {
         });
 
         // Navigate to setup budget screen
-        router.push("/setup-budget");
+        router.push("/setup-wallet");
         return;
       }
     } catch (e: any) {

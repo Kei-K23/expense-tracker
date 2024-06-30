@@ -25,7 +25,7 @@ export default function AuthLayout() {
         }}
       />
       <Stack.Screen
-        name="setup-budget"
+        name="setup-wallet"
         options={{
           headerShown: false,
         }}

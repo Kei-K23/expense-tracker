@@ -2,10 +2,10 @@ import Button from "@/components/ui/button";
 import FormField from "@/components/ui/form-field";
 import { colors } from "@/constants/Colors";
 import { fontSize } from "@/constants/Style";
-import { createBudget } from "@/db/budget";
+import { createWallet } from "@/db/budget";
 import useAuthUser from "@/hooks/use-auth-user";
 import useShowErrorAlert from "@/hooks/use-show-error-alert";
-import { BudgetType } from "@/types";
+import { WalletType } from "@/types";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
@@ -15,14 +15,14 @@ export default function SetupBudgetScreen() {
   const { user } = useAuthUser();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const [budget, setBudget] = useState<BudgetType>({
+  const [budget, setBudget] = useState<WalletType>({
     name: "",
     type: "",
     user: null,
     balance: 0,
   });
 
-  const handleOnChange = (field: keyof BudgetType, value: string) => {
+  const handleOnChange = (field: keyof WalletType, value: string) => {
     setBudget((prevState) => ({
       ...prevState,
       [field]: value.trim(),
@@ -54,7 +54,7 @@ export default function SetupBudgetScreen() {
     try {
       setIsLoading(true);
       // User account creation
-      const newBudget = await createBudget(budget);
+      const newBudget = await createWallet(budget);
 
       if (newBudget.$id) {
         showAlert({

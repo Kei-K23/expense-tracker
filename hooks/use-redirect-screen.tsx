@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { getAllBudgetByUser } from "@/db/budget";
+import { getAllWalletByUser } from "@/db/budget";
 import { getUserById, logoutUser } from "@/db/user";
 import { getStoreData, removeStoredData } from "@/lib/async-storeage";
 import { keysForStorage } from "@/constants/Keys";
@@ -21,7 +21,7 @@ export default function useRedirectScreen() {
         }
         const userAccount = await getUserById(storageSessionData?.$id!);
 
-        const budgets = await getAllBudgetByUser(userAccount.$id);
+        const budgets = await getAllWalletByUser(userAccount.$id);
 
         const session = await account.getSession(storageSessionData?.$id!);
 
@@ -42,7 +42,7 @@ export default function useRedirectScreen() {
                   router.push("/home");
                 } else {
                   // Navigate to initial setup budget for user account
-                  router.push("/setup-budget");
+                  router.push("/setup-wallet");
                 }
               } else {
                 // If user account is not created, then navigate to account setup screen

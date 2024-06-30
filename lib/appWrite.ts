@@ -7,7 +7,7 @@ export const appwriteConfig = {
     databaseId: process.env.EXPO_PUBLIC_DATABASE_ID!,
     storageId: process.env.EXPO_PUBLIC_STORAGE_ID!,
     userCollectionId: process.env.EXPO_PUBLIC_USER_COLLECTION_ID!,
-    budgetCollectionId: process.env.EXPO_PUBLIC_BUDGET_COLLECTION_ID!,
+    walletCollectionId: process.env.EXPO_PUBLIC_WALLET_COLLECTION_ID!,
     transactionCollectionId: process.env.EXPO_PUBLIC_TRANSACTION_COLLECTION_ID!,
 }
 

@@ -22,7 +22,7 @@ export default function TransactionHeader({
         },
       ]}
     >
-      <View style={[styles.subContainer]}>
+      <View>
         <Text style={[styles.title]}>How much?</Text>
         <Text style={[styles.balance]}>${balance}</Text>
       </View>
@@ -41,9 +41,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     alignItems: "flex-start",
     marginBottom: 20,
-  },
-  subContainer: {
-    marginBottom: 40,
   },
   title: {
     color: "#fff",

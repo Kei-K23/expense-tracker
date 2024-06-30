@@ -34,9 +34,9 @@ export type UserType = {
     avatar?: DocumentPickerAsset | null;
 }
 
-export type Budget = Models.Document & BudgetType
+export type Wallet = Models.Document & WalletType
 
-export type BudgetType = {
+export type WalletType = {
     name: string;
     balance: number;
     user: UserData | null;
@@ -52,10 +52,9 @@ export type ProfileActionType = {
 }
 
 export type TransactionType = {
-    name: string;
     description?: string;
     type: string;
-    budgets: Budget | null;
+    wallets: string;
     attachmentURL: string
     balance: number;
     category: string;
@@ -64,10 +63,9 @@ export type TransactionType = {
 export type Transaction = Models.Document & TransactionType;
 
 export type TransactionData = {
-    name: string;
     description?: string;
     type: string;
-    budgets: Budget | null;
+    wallets: string;
     balance: number;
     attachmentURL: DocumentPickerAsset | null;
     category: string;

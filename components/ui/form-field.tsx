@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     fontSize: fontSize.text,
     fontWeight: "600",
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: colors.gray[100],
   },
   inputFocused: {

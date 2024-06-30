@@ -1,6 +1,6 @@
 import HomeHeader from "@/components/home-screen/home-header";
 import { keysForStorage } from "@/constants/Keys";
-import { getTotalBalanceOfBudgetsByUserId } from "@/db/budget";
+import { getTotalBalanceOfWalletsByUserId } from "@/db/budget";
 import useAuthUser from "@/hooks/use-auth-user";
 import { getStoreData } from "@/lib/async-storeage";
 import { UserData } from "@/types";
@@ -16,7 +16,7 @@ export default function HomeScreen() {
     (async () => {
       // Get user data from storage
       const storageUser = await getStoreData<UserData>(keysForStorage.user);
-      const totalBalanceData = await getTotalBalanceOfBudgetsByUserId(
+      const totalBalanceData = await getTotalBalanceOfWalletsByUserId(
         storageUser?.$id!
       );
       setTotalBalance(totalBalanceData);

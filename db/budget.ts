@@ -1,11 +1,11 @@
 import { appwriteConfig, databases } from "@/lib/appWrite";
 import { ID, Query } from "react-native-appwrite";
-import { Budget, BudgetType } from "@/types";
+import { Wallet, WalletType } from "@/types";
 
-export const getAllBudgetByUser = async (userId: string) => {
+export const getAllWalletByUser = async (userId: string) => {
     try {
-        // Query to get all budgets by user id
-        const data = await databases.listDocuments<Budget>(appwriteConfig.databaseId, appwriteConfig.budgetCollectionId, [
+        // Query to get all wallets by user id
+        const data = await databases.listDocuments<Wallet>(appwriteConfig.databaseId, appwriteConfig.walletCollectionId, [
             Query.equal("user", userId),
             Query.orderDesc("$createdAt"),
         ]);
@@ -13,15 +13,15 @@ export const getAllBudgetByUser = async (userId: string) => {
         return data;
     } catch (e) {
         console.log(e);
-        throw new Error("Something went wrong when getting budgets by user id");
+        throw new Error("Something went wrong when getting wallets by user id");
     }
 }
 
-// Get total balance according to budget collection that have in user by user id
-export const getTotalBalanceOfBudgetsByUserId = async (userId: string) => {
+// Get total balance according to wallet collection that have in user by user id
+export const getTotalBalanceOfWalletsByUserId = async (userId: string) => {
     try {
-        // Query to get all budgets by user id
-        const data = await databases.listDocuments<Budget>(appwriteConfig.databaseId, appwriteConfig.budgetCollectionId, [
+        // Query to get all wallets by user id
+        const data = await databases.listDocuments<Wallet>(appwriteConfig.databaseId, appwriteConfig.walletCollectionId, [
             Query.equal("user", userId),
             Query.orderDesc("$createdAt"),
         ]);
@@ -29,20 +29,20 @@ export const getTotalBalanceOfBudgetsByUserId = async (userId: string) => {
         return data.documents.reduce((acc, cur) => acc += cur.balance, 0);
     } catch (e) {
         console.log(e);
-        throw new Error("Something went wrong when getting budgets by user id to calculate total balance");
+        throw new Error("Something went wrong when getting wallets by user id to calculate total balance");
     }
 }
 
 //! Must TODO : Change balance type to work with float data types
-export const createBudget = async ({ name, balance, type, user }: BudgetType) => {
+export const createWallet = async ({ name, balance, type, user }: WalletType) => {
     try {
         if (!user?.$id) {
-            throw new Error("Cannot create budget. User id is missing");
+            throw new Error("Cannot create wallet. User id is missing");
         }
-        // Create new budget for user
-        const newBudget = await databases.createDocument(
+        // Create new wallet for user
+        const newWallet = await databases.createDocument(
             appwriteConfig.databaseId,
-            appwriteConfig.budgetCollectionId,
+            appwriteConfig.walletCollectionId,
             ID.unique(),
             {
                 name: name.trim(),
@@ -52,10 +52,10 @@ export const createBudget = async ({ name, balance, type, user }: BudgetType) =>
             }
         );
 
-        return newBudget;
+        return newWallet;
     } catch (e) {
         console.log(e);
-        throw new Error("Something went wrong when creating budgets");
+        throw new Error("Something went wrong when creating wallets");
     }
 }
 
