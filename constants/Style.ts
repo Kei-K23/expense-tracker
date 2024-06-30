@@ -17,6 +17,7 @@ export const fontSize = {
     headerSmallBold: 26,
     headerSmall: 24,
     headerTiny: 20,
+    headerTinySmall: 19,
     textBold: 18,
     text: 16,
     textSmallBold: 14,

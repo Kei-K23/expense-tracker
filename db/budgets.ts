@@ -17,13 +17,14 @@ export const getAllBudgetsByUser = async (userId: string) => {
     }
 }
 
-// Get total balance according to wallet collection that have in user by user id
+// Get all budgets by user id and month
 export const getAllBudgetsByUserIdAndMonth = async (userId: string, createdMonth: string) => {
     try {
         // Query to get all budgets by user id and month
         const data = await databases.listDocuments<Budget>(appwriteConfig.databaseId, appwriteConfig.budgetCollectionId, [
             Query.equal("users", userId),
             Query.equal("createdMonth", createdMonth),
+            Query.orderDesc("$createdAt"),
         ]);
 
         return data;
@@ -33,11 +34,35 @@ export const getAllBudgetsByUserIdAndMonth = async (userId: string, createdMonth
     }
 }
 
-export const createBudget = async ({ name, user, createdMonth, limitedAmount, receiveAlert }: BudgetType) => {
+// Get all budgets by budget name and month
+export const getAllBudgetsByNameAndMonth = async (name: string, createdMonth: string) => {
     try {
-        if (!user) {
-            throw new Error("Cannot create budget. User id is missing");
-        }
+        // Query to get all budgets by user id and month
+        const data = await databases.listDocuments<Budget>(appwriteConfig.databaseId, appwriteConfig.budgetCollectionId, [
+            Query.equal("name", name),
+            Query.equal("createdMonth", createdMonth),
+            Query.orderDesc("$createdAt"),
+        ]);
+
+        return data;
+    } catch (e) {
+        console.log(e);
+        throw new Error("Something went wrong when getting budgets by user id and created month");
+    }
+}
+
+export const createBudget = async ({ name, user, createdMonth, limitedAmount, receiveAlert, color }: BudgetType) => {
+    if (!user) {
+        throw new Error("Cannot create budget. User id is missing");
+    }
+
+    // Check if budget with the same name and month already exists
+    const data = await getAllBudgetsByNameAndMonth(name, createdMonth)
+    if (data.documents.length > 0) {
+        throw new Error("Cannot create budget. Budget with the same name already exists for this month");
+    }
+    try {
+
         // Create new budget for user
         const newBudget = await databases.createDocument(
             appwriteConfig.databaseId,
@@ -49,6 +74,7 @@ export const createBudget = async ({ name, user, createdMonth, limitedAmount, re
                 createdMonth: createdMonth,
                 users: user,
                 receiveAlert: receiveAlert,
+                color: color
             }
         );
 

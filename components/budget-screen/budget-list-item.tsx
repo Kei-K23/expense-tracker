@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 10,
     backgroundColor: "#fff",
+    marginVertical: 5,
   },
   subContainer: {
     display: "flex",
@@ -61,7 +62,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   remaining: {
-    fontSize: fontSize.headerTiny,
+    fontSize: fontSize.headerTinySmall,
     marginBottom: 5,
     fontWeight: "900",
   },

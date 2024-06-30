@@ -59,25 +59,42 @@ export default function CreateBudgetScreen() {
     try {
       setIsLoading(true);
       const user = await getStoreData<User>(keysForStorage.user);
-      // Check if user id is exist or not
-      if (user) {
-        // Set the user id to budget
-        handleOnChange("user", user.$id);
-      } else {
+
+      // Check if user id exists
+      if (!user) {
         showAlert({
           message: "User id is missing",
         });
         return;
       }
 
+      // Set the user id to budget
+      const updatedBudget = {
+        ...budget,
+        user: user.$id,
+      };
+
+      // IF switch is off that means default budget dropdown is used
+      if (!isSwitchOn) {
+        if (value) {
+          // Set the budget name
+          updatedBudget.name = value;
+        } else {
+          showAlert({
+            message: "Missing budget name",
+          });
+          return;
+        }
+      }
+
       // Set color for the budget
-      handleOnChange("color", randomColor);
+      updatedBudget.color = randomColor;
 
       // Create budget here
-      const newBudget = await createBudget(budget);
+      const newBudget = await createBudget(updatedBudget);
       if (!newBudget) {
         showAlert({
-          message: "Failed to create budget. Please try again later.",
+          message: "Failed to create budget. Please try again later",
         });
         return;
       }
