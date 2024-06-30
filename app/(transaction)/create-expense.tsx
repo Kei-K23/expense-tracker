@@ -50,13 +50,6 @@ export default function CreateExpenseScreen() {
     }
   };
 
-  const balanceOnChange = (value: string) => {
-    setTransaction((prevState) => ({
-      ...prevState,
-      balance: +value.trim(),
-    }));
-  };
-
   const handleOnChange = (field: keyof TransactionData, value: string) => {
     setTransaction((prevState) => ({
       ...prevState,
@@ -75,6 +68,7 @@ export default function CreateExpenseScreen() {
       showAlert({
         message: "Wallet is missing",
       });
+      return;
     }
     try {
       setIsLoading(true);
@@ -112,7 +106,6 @@ export default function CreateExpenseScreen() {
       <TransactionHeader
         title="How much?"
         balance={transaction.balance}
-        handleOnChange={balanceOnChange}
         bgColor={colors.danger[300]}
       />
       <View style={[styles.formContainer]}>
@@ -122,6 +115,13 @@ export default function CreateExpenseScreen() {
           labelShown={false}
           placeholder="Category"
           value={transaction.category}
+        />
+        <FormField
+          handleOnChange={(value) => handleOnChange("balance", value)}
+          label="Balance"
+          labelShown={false}
+          placeholder="Balance"
+          value={transaction.balance.toString()}
         />
         <FormField
           handleOnChange={(value) => handleOnChange("description", value)}

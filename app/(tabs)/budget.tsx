@@ -3,7 +3,7 @@ import BudgetListsContainer from "@/components/budget-screen/budget-lists-contai
 import Button from "@/components/ui/button";
 import { keysForStorage } from "@/constants/Keys";
 import { getAllBudgetsByUserIdAndMonth } from "@/db/budgets";
-import useMonth from "@/hooks/use-current-month";
+import useMonth from "@/hooks/use-month";
 import { getStoreData } from "@/lib/async-storeage";
 import { Budget, User } from "@/types";
 import { router } from "expo-router";

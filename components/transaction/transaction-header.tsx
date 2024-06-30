@@ -6,13 +6,11 @@ type TransactionHeaderProps = {
   title: string;
   bgColor: string;
   balance: number;
-  handleOnChange: (value: string) => void;
 };
 export default function TransactionHeader({
   title,
   balance,
   bgColor,
-  handleOnChange,
 }: TransactionHeaderProps) {
   return (
     <View

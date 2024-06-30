@@ -28,12 +28,17 @@ export default function useMonth() {
     });
   };
 
+  // Formatter for current date to "Month Year"
+  const formatToMonthYear = (date: Date) => {
+    return date.toLocaleString("default", {
+      month: "long",
+      year: "numeric",
+    });
+  };
+
   // Format current month as "Month Year" e.g. January 2022
-  const currentMonth = currentDate.toLocaleString("default", {
-    month: "long",
-    year: "numeric",
-  });
+  const currentMonth = formatToMonthYear(currentDate);
 
   // Return
-  return { currentMonth, getNextMonth, getPreviousMonth };
+  return { currentMonth, getNextMonth, getPreviousMonth, formatToMonthYear };
 }

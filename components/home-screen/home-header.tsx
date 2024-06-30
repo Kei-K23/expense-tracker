@@ -4,7 +4,7 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import Badge from "./badge";
 import { colors } from "@/constants/Colors";
 import { fontSize } from "@/constants/Style";
-import useMonth from "@/hooks/use-current-month";
+import useMonth from "@/hooks/use-month";
 
 type HomeHeaderProps = {
   user: UserData;
