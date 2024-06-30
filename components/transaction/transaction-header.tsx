@@ -1,14 +1,15 @@
 import { fontSize } from "@/constants/Style";
-import { TransactionData } from "@/types";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 type TransactionHeaderProps = {
+  title: string;
   bgColor: string;
   balance: number;
-  handleOnChange: (field: keyof TransactionData, value: string) => void;
+  handleOnChange: (value: string) => void;
 };
 export default function TransactionHeader({
+  title,
   balance,
   bgColor,
   handleOnChange,
@@ -23,7 +24,7 @@ export default function TransactionHeader({
       ]}
     >
       <View>
-        <Text style={[styles.title]}>How much?</Text>
+        <Text style={[styles.title]}>{title}</Text>
         <Text style={[styles.balance]}>${balance}</Text>
       </View>
     </View>
@@ -44,10 +45,11 @@ const styles = StyleSheet.create({
   },
   title: {
     color: "#fff",
+    fontSize: fontSize.textBold,
   },
   balance: {
     color: "#fff",
-    fontSize: fontSize.headerBold,
+    fontSize: fontSize.headerExtraBold,
     fontWeight: "800",
   },
 });

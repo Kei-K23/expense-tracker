@@ -50,6 +50,13 @@ export default function CreateExpenseScreen() {
     }
   };
 
+  const balanceOnChange = (value: string) => {
+    setTransaction((prevState) => ({
+      ...prevState,
+      balance: +value.trim(),
+    }));
+  };
+
   const handleOnChange = (field: keyof TransactionData, value: string) => {
     setTransaction((prevState) => ({
       ...prevState,
@@ -66,7 +73,7 @@ export default function CreateExpenseScreen() {
       });
     } else {
       showAlert({
-        message: "Budget account is missing",
+        message: "Wallet is missing",
       });
     }
     try {
@@ -103,8 +110,9 @@ export default function CreateExpenseScreen() {
     <SafeAreaView style={[styles.container]}>
       <CustomNavHeader title="Expense" bgColor={colors.danger[300]} />
       <TransactionHeader
+        title="How much?"
         balance={transaction.balance}
-        handleOnChange={handleOnChange}
+        handleOnChange={balanceOnChange}
         bgColor={colors.danger[300]}
       />
       <View style={[styles.formContainer]}>

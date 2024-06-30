@@ -6,6 +6,7 @@ import { getAllBudgetsByUserIdAndMonth } from "@/db/budgets";
 import useMonth from "@/hooks/use-current-month";
 import { getStoreData } from "@/lib/async-storeage";
 import { Budget, User } from "@/types";
+import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView, View } from "react-native";
 
@@ -44,7 +45,12 @@ export default function BudgetScreen() {
           marginTop: 20,
         }}
       >
-        <Button title="Create a budget" />
+        <Button
+          title="Create a budget"
+          callbackFn={() => {
+            router.push("/create-budget");
+          }}
+        />
       </View>
     </SafeAreaView>
   );

@@ -11,6 +11,7 @@ export const defaultStyles = StyleSheet.create({
 })
 
 export const fontSize = {
+    headerExtraBold: 34,
     headerBold: 32,
     header: 30,
     headerSmallBold: 26,
