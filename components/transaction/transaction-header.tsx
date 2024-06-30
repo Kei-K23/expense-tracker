@@ -23,7 +23,7 @@ export default function TransactionHeader({
     >
       <View>
         <Text style={[styles.title]}>{title}</Text>
-        <Text style={[styles.balance]}>${balance}</Text>
+        <Text style={[styles.balance]}>${balance || 0}</Text>
       </View>
     </View>
   );
@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "flex-end",
     alignItems: "flex-start",
-    marginBottom: 20,
   },
   title: {
     color: "#fff",

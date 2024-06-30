@@ -19,6 +19,7 @@ export const fontSize = {
     headerTiny: 20,
     textBold: 18,
     text: 16,
-    textSmall: 14,
+    textSmallBold: 14,
+    textSmall: 13,
     textTiny: 11,
 }

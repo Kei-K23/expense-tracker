@@ -10,12 +10,12 @@ import { router } from "expo-router";
 import React, { useState } from "react";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 
-export default function SetupBudgetScreen() {
+export default function SetupWalletScreen() {
   const showAlert = useShowErrorAlert();
   const { user } = useAuthUser();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const [budget, setBudget] = useState<WalletType>({
+  const [wallet, setWallet] = useState<WalletType>({
     name: "",
     type: "",
     user: null,
@@ -23,7 +23,7 @@ export default function SetupBudgetScreen() {
   });
 
   const handleOnChange = (field: keyof WalletType, value: string) => {
-    setBudget((prevState) => ({
+    setWallet((prevState) => ({
       ...prevState,
       [field]: value.trim(),
     }));
@@ -32,8 +32,8 @@ export default function SetupBudgetScreen() {
   const handleOnPress = async () => {
     // Check user id exists, if exists set to account id
     if (user) {
-      setBudget({
-        ...budget,
+      setWallet({
+        ...wallet,
         user: user,
       });
     } else {
@@ -44,7 +44,7 @@ export default function SetupBudgetScreen() {
     }
 
     // Check if fields have values to register
-    if (budget.name === "" || budget.balance < 0 || budget.type === "") {
+    if (wallet.name === "" || wallet.balance < 0 || wallet.type === "") {
       showAlert({
         message: "Please fill in all the fields",
       });
@@ -53,15 +53,15 @@ export default function SetupBudgetScreen() {
 
     try {
       setIsLoading(true);
-      // User account creation
-      const newBudget = await createWallet(budget);
+      // new wallet creation
+      const newWallet = await createWallet(wallet);
 
-      if (newBudget.$id) {
+      if (newWallet.$id) {
         showAlert({
           message: "Add new wallet successfully",
         });
 
-        // Navigate to setup budget screen
+        // Navigate to main home screen
         router.push("/home");
         return;
       }
@@ -87,14 +87,14 @@ export default function SetupBudgetScreen() {
           label="Name"
           labelShown={false}
           placeholder="Name"
-          value={budget.name}
+          value={wallet.name}
         />
         <FormField
           handleOnChange={(value) => handleOnChange("balance", value)}
           label="Balance"
           labelShown={false}
           placeholder="Balance"
-          value={budget.balance.toString()}
+          value={wallet.balance === 0 ? "" : wallet.balance.toString()}
         />
         {/* TODO Replace with dropdown select element */}
         <FormField
@@ -102,7 +102,7 @@ export default function SetupBudgetScreen() {
           label="Account Type"
           labelShown={false}
           placeholder="Account Type"
-          value={budget.type}
+          value={wallet.type}
         />
         <View
           style={{

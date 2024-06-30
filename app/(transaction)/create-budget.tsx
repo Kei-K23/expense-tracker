@@ -3,8 +3,10 @@ import TransactionHeader from "@/components/transaction/transaction-header";
 import Button from "@/components/ui/button";
 import FormField from "@/components/ui/form-field";
 import FormSwitchField from "@/components/ui/form-switch-field";
+import { budgetTypes } from "@/constants/Budgets";
 import { colors } from "@/constants/Colors";
 import { keysForStorage } from "@/constants/Keys";
+import { fontSize } from "@/constants/Style";
 import { createBudget } from "@/db/budgets";
 import useMonth from "@/hooks/use-month";
 import useRandomColor from "@/hooks/use-random-color";
@@ -13,13 +15,22 @@ import { getStoreData } from "@/lib/async-storeage";
 import { BudgetType, User } from "@/types";
 import { router } from "expo-router";
 import React, { useState } from "react";
-import { SafeAreaView, StyleSheet, View } from "react-native";
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import DropDownPicker from "react-native-dropdown-picker";
+import { Switch } from "react-native-paper";
 
 export default function CreateBudgetScreen() {
   const randomColor = useRandomColor();
   const showAlert = useShowErrorAlert();
   const { formatToMonthYear } = useMonth();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [items, setItems] =
+    useState<{ label: string; value: string }[]>(budgetTypes);
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+
+  const [isSwitchOn, setIsSwitchOn] = useState<boolean>(false);
+  const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
 
   const [budget, setBudget] = useState<BudgetType>({
     color: "",
@@ -34,6 +45,13 @@ export default function CreateBudgetScreen() {
     setBudget((prevState) => ({
       ...prevState,
       [field]: value.trim(),
+    }));
+  };
+
+  const receiveAlertOnChange = (value: boolean) => {
+    setBudget((prevState) => ({
+      ...prevState,
+      receiveAlert: value,
     }));
   };
 
@@ -84,19 +102,44 @@ export default function CreateBudgetScreen() {
         bgColor={colors.primary[100]}
       />
       <View style={[styles.formContainer]}>
-        <FormField
-          handleOnChange={(value) => handleOnChange("name", value)}
-          label="Name"
-          labelShown={false}
-          placeholder="Name"
-          value={budget.name}
-        />
+        {isSwitchOn ? (
+          <FormField
+            handleOnChange={(value) => handleOnChange("name", value)}
+            label="Budget Name"
+            labelShown={false}
+            placeholder="Budget Name"
+            value={budget.name}
+          />
+        ) : (
+          <DropDownPicker
+            placeholder="Budget Name"
+            placeholderStyle={[styles.switchText]}
+            disabled={isLoading}
+            open={open}
+            value={value}
+            items={items}
+            setOpen={setOpen}
+            setValue={setValue}
+            setItems={setItems}
+            textStyle={[styles.switchText]}
+            style={{
+              borderColor: colors.gray[100],
+              marginVertical: 10,
+            }}
+          />
+        )}
+        <View style={[styles.switchContainer]}>
+          <Text style={[styles.switchLabel]}>Create your own budget name</Text>
+          <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
+        </View>
         <FormField
           handleOnChange={(value) => handleOnChange("limitedAmount", value)}
           label="Limited Amount"
           labelShown={false}
           placeholder="Limited Amount"
-          value={budget.limitedAmount.toString()}
+          value={
+            budget.limitedAmount === 0 ? "" : budget.limitedAmount.toString()
+          }
           keyboardType="numeric"
         />
         <FormSwitchField
@@ -104,7 +147,7 @@ export default function CreateBudgetScreen() {
           description="Receive alert when it reaches some point."
           labelShown={true}
           value={budget.receiveAlert}
-          handleOnChange={() => {}}
+          handleOnChange={receiveAlertOnChange}
         />
         <View
           style={{
@@ -135,5 +178,21 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     borderTopRightRadius: 30,
     borderTopLeftRadius: 30,
+  },
+  switchContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: -15,
+  },
+  switchLabel: {
+    fontWeight: "600",
+    color: colors.gray[400],
+  },
+  switchText: {
+    color: colors.gray[400],
+    fontSize: fontSize.text,
+    fontWeight: "600",
   },
 });

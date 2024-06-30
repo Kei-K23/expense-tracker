@@ -9,7 +9,7 @@ type FormSwitchFieldProps = {
   description?: string;
   labelShown?: boolean;
   value: boolean;
-  handleOnChange: (text: string) => void;
+  handleOnChange: (text: boolean) => void;
 };
 
 export default function FormSwitchField({
@@ -20,7 +20,12 @@ export default function FormSwitchField({
   handleOnChange,
 }: FormSwitchFieldProps) {
   const [isSwitchOn, setIsSwitchOn] = useState<boolean>(value);
-  const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
+
+  const onToggleSwitch = () => {
+    // Change the state of receive alert value
+    handleOnChange(!isSwitchOn);
+    setIsSwitchOn(!isSwitchOn);
+  };
 
   return (
     <View style={[styles.container]}>
