@@ -17,6 +17,30 @@ export const getAllBudgetsByUser = async (userId: string) => {
     }
 }
 
+export const getBudgetById = async (id: string) => {
+    try {
+        // Query to get all wallets by user id
+        const data = await databases.getDocument<Budget>(appwriteConfig.databaseId, appwriteConfig.budgetCollectionId, id);
+
+        return data;
+    } catch (e) {
+        console.log(e);
+        throw new Error("Something went wrong when getting budget by id");
+    }
+}
+
+export const deleteBudgetById = async (id: string) => {
+    try {
+        //! Check the need to first check the budget is exist before deleting
+
+        // Delete the budget by id
+        await databases.deleteDocument(appwriteConfig.databaseId, appwriteConfig.budgetCollectionId, id);
+    } catch (e) {
+        console.log(e);
+        throw new Error("Something went wrong when deleting budget by id");
+    }
+}
+
 // Get all budgets by user id and month
 export const getAllBudgetsByUserIdAndMonth = async (userId: string, createdMonth: string) => {
     try {

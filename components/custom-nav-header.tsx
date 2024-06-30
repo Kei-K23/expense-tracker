@@ -1,4 +1,3 @@
-import { colors } from "@/constants/Colors";
 import { fontSize } from "@/constants/Style";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
@@ -7,7 +6,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 type CustomNavHeaderProps = {
   title: string;
-  bgColor: string;
+  bgColor?: string;
 };
 
 export default function CustomNavHeader({
@@ -24,9 +23,18 @@ export default function CustomNavHeader({
       ]}
     >
       <TouchableOpacity onPress={() => router.back()}>
-        <Ionicons name="arrow-back" size={25} color={"#fff"} />
+        <Ionicons name="arrow-back" size={25} color={bgColor && "#fff"} />
       </TouchableOpacity>
-      <Text style={[styles.title]}>{title}</Text>
+      <Text
+        style={[
+          styles.title,
+          {
+            color: bgColor ? "#fff" : "#000",
+          },
+        ]}
+      >
+        {title}
+      </Text>
 
       {/* NOTE: This is just for simulation to center title */}
       <View style={{ width: 25, height: 25 }} />
@@ -47,7 +55,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: "700",
-    color: "#fff",
     fontSize: fontSize.textBold,
   },
 });

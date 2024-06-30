@@ -2,8 +2,9 @@ import { colors } from "@/constants/Colors";
 import { fontSize } from "@/constants/Style";
 import { Budget } from "@/types";
 import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { ProgressBar } from "react-native-paper";
 
 type BudgetListItemProps = {
@@ -12,7 +13,10 @@ type BudgetListItemProps = {
 
 export default function BudgetListItem({ item }: BudgetListItemProps) {
   return (
-    <View style={[styles.container]}>
+    <TouchableOpacity
+      style={[styles.container]}
+      onPress={() => router.push(`/detail-budget/${item.$id}`)}
+    >
       <View style={[styles.subContainer]}>
         <View style={[styles.subContainer]}>
           <View
@@ -47,7 +51,7 @@ export default function BudgetListItem({ item }: BudgetListItemProps) {
       {item.limitedAmount === item.expensedAmount && (
         <Text style={[styles.warningText]}>You've exceed the limit!</Text>
       )}
-    </View>
+    </TouchableOpacity>
   );
 }
 
