@@ -121,7 +121,9 @@ export default function CreateExpenseScreen() {
           label="Balance"
           labelShown={false}
           placeholder="Balance"
-          value={transaction.balance.toString()}
+          value={
+            transaction.balance === 0 ? "" : transaction.balance.toString()
+          }
         />
         <FormField
           handleOnChange={(value) => handleOnChange("description", value)}
