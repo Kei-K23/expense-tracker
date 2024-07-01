@@ -82,3 +82,9 @@ export type BudgetType = {
 }
 
 export type Budget = Models.Document & BudgetType;
+
+export type TransferType = {
+    fromValue: string;
+    toValue: string;
+    balance: number;
+}

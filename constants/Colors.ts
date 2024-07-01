@@ -48,5 +48,5 @@ export const colors = {
   },
   blue: {
     100: "#0077FF"
-  }
+  },
 };

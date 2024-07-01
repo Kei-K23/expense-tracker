@@ -111,14 +111,11 @@ export default function AccountVerifyScreen() {
         const userID = await registerUserAccountWithPhoneNumber(phone);
 
         if (userID) {
-          // Navigate to account verification screen
-          router.push(`/account-verify/${phone}-${userID}`);
-
           // Start the countdown
           setCountdown(60);
         } else {
           showAlert({
-            message: "Something went wrong when registering new account",
+            message: "Something went wrong when resending verification code",
           });
           return;
         }
@@ -172,7 +169,7 @@ export default function AccountVerifyScreen() {
       </Text>
       <TouchableOpacity onPress={handleResendCode} disabled={countdown > 0}>
         <Text style={[countdown > 0 ? styles.disabledText : styles.linkText]}>
-          I didn't receive the code? Send again{" "}
+          Didn't receive the code? Send again{" "}
           {countdown > 0 && `(${countdown}s)`}
         </Text>
       </TouchableOpacity>
