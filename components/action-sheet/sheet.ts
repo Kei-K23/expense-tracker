@@ -2,6 +2,7 @@
 import { registerSheet, SheetDefinition } from "react-native-actions-sheet";
 import TransactionActionSheet from "./transaction-action-sheet";
 import BudgetDeleteActionSheet from "./budget-delete-action-sheet";
+import BudgetEditActionSheet from "./budget-edit-action-sheet";
 
 /**
  * Registering the sheets here because otherwise sheet closes on
@@ -9,11 +10,17 @@ import BudgetDeleteActionSheet from "./budget-delete-action-sheet";
  */
 registerSheet("create-transaction", TransactionActionSheet);
 registerSheet("budget-delete", BudgetDeleteActionSheet);
+registerSheet("budget-edit", BudgetEditActionSheet);
 export { };
 
 declare module 'react-native-actions-sheet' {
     interface Sheets {
         'budget-delete': SheetDefinition<{
+            payload: {
+                budgetId: string;
+            };
+        }>;
+        'budget-edit': SheetDefinition<{
             payload: {
                 budgetId: string;
             };

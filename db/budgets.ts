@@ -41,6 +41,20 @@ export const deleteBudgetById = async (id: string) => {
     }
 }
 
+export const editBudgetById = async (id: string, name: string, limitedAmount: number) => {
+    try {
+
+        // Delete the budget by id
+        await databases.updateDocument(appwriteConfig.databaseId, appwriteConfig.budgetCollectionId, id, {
+            name,
+            limitedAmount,
+        });
+    } catch (e) {
+        console.log(e);
+        throw new Error("Something went wrong when updating budget by id");
+    }
+}
+
 // Get all budgets by user id and month
 export const getAllBudgetsByUserIdAndMonth = async (userId: string, createdMonth: string) => {
     try {

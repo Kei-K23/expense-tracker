@@ -21,6 +21,12 @@ export default function BudgetIdScreen() {
       payload: { budgetId: budget?.$id! },
     });
   };
+  const handelOnPressEdit = () => {
+    // Open action sheet to edit
+    SheetManager.show("budget-edit", {
+      payload: { budgetId: budget?.$id! },
+    });
+  };
 
   useEffect(() => {
     (async () => {
@@ -68,7 +74,7 @@ export default function BudgetIdScreen() {
       {/* Simulate middle white space */}
       <View style={{ flex: 1 }} />
       <View style={[styles.btnContainer]}>
-        <Button title="Edit" />
+        <Button title="Edit" callbackFn={handelOnPressEdit} />
         <Button
           title="Delete"
           variant="danger"

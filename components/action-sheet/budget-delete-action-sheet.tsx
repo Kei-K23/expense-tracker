@@ -44,6 +44,10 @@ export default function BudgetDeleteActionSheet({
       // Navigate back to budget screen
       router.push("/budget");
     } catch (e: any) {
+      showAlert({
+        message: e.message,
+      });
+      return;
     } finally {
       setIsLoading(false);
     }
